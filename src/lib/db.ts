@@ -9,7 +9,7 @@ import type { Tutorial, Lesson } from './types';
 
 export const saveQuizResult = async (userId: string, lessonSlug: string, score: number, totalQuestions: number) => {
   if (!db) {
-    console.error("Firestore is not initialized.");
+    console.warn("Firestore is not initialized. Skipping saveQuizResult.");
     return;
   }
   const progressRef = doc(db, 'progress', userId);

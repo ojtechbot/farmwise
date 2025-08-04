@@ -31,9 +31,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // This check is crucial. We wait for Firebase to be initialized on the client.
+    // This effect should only run on the client where `auth` is available.
     if (!auth) {
-        setLoading(true);
+        // We are on the server, so we just wait for the client to take over.
+        // The `loading` state remains true.
         return;
     }
     
@@ -103,7 +104,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setUser(null);
   };
 
-  // The preloader now reliably shows until the auth state is confirmed on the client.
   if (loading) {
     return <Preloader />;
   }

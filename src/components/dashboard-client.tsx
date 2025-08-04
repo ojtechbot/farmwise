@@ -51,7 +51,18 @@ export function DashboardClient() {
         setLoading(false);
       }
     }
-    fetchTutorialsAndProgress();
+    if (user) {
+        fetchTutorialsAndProgress();
+    } else {
+        // If no user, just fetch tutorials
+        getTutorials().then(fetchedTutorials => {
+            setTutorials(fetchedTutorials);
+            setLoading(false);
+        }).catch(err => {
+            console.error("Failed to fetch tutorials", err);
+            setLoading(false);
+        });
+    }
   }, [user]);
   
   const totalLessons = tutorials.reduce((acc, t) => acc + (t.lessons?.length || 0), 0);

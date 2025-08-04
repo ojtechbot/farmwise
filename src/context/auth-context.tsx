@@ -39,11 +39,19 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
-        const userDoc = await getDoc(doc(db, 'users', user.uid));
+        const userDocRef = doc(db, 'users', user.uid);
+        const userDoc = await getDoc(userDocRef);
         if (userDoc.exists()) {
           setUser({ ...user, ...userDoc.data() });
         } else {
-          setUser(user);
+          // This case handles users who signed up but might not have a doc yet (e.g. Google sign-in)
+           await setDoc(userDocRef, {
+             email: user.email,
+             displayName: user.displayName,
+             photoURL: user.photoURL,
+           }, { merge: true });
+           const newUserDoc = await getDoc(userDocRef);
+           setUser({ ...user, ...newUserDoc.data() });
         }
       } else {
         setUser(null);
@@ -85,14 +93,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         displayName: user.displayName,
         photoURL: user.photoURL,
       });
-       setUser({ ...user, ...{
-        email: user.email,
-        displayName: user.displayName,
-        photoURL: user.photoURL,
-      } });
-    } else {
-       setUser({ ...user, ...userDoc.data() });
     }
+    // Auth state listener will handle setting the user
   };
 
   const signOut = async () => {

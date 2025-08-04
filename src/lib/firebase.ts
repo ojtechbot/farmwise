@@ -17,7 +17,7 @@ let auth: Auth;
 let db: Firestore;
 
 // This function ensures that Firebase is initialized only once and only on the client side.
-const initializeFirebase = () => {
+const initializeFirebaseClient = () => {
   if (typeof window !== 'undefined') {
     if (!getApps().length) {
       app = initializeApp(firebaseConfig);
@@ -29,6 +29,6 @@ const initializeFirebase = () => {
   }
 };
 
-initializeFirebase();
+initializeFirebaseClient();
 
 export { app, auth, db };

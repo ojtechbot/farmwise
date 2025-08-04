@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useEffect, useState } from 'react';
@@ -74,6 +75,7 @@ export default function LearnPage() {
 
   if (!tutorial) {
     notFound();
+    return null; // Return null after calling notFound()
   }
 
   const lesson = tutorial.lessons[0];

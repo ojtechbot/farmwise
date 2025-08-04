@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useEffect, useState } from 'react';
@@ -77,6 +78,7 @@ export default function QuizPage() {
 
   if (!lesson || !tutorialSlug) {
     notFound();
+    return null;
   }
   
   return (

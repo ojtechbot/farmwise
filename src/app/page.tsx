@@ -15,6 +15,7 @@ export default function Home() {
 
   useEffect(() => {
     const fetchTutorials = async () => {
+      setLoading(true);
       try {
         const fetchedTutorials = await getTutorials();
         setTutorials(fetchedTutorials);

@@ -69,7 +69,7 @@ export const getLessonChatHistory = async (userId: string, lessonSlug: string): 
 export const saveLessonChatMessage = async (userId: string, lessonSlug: string, message: ChatMessage) => {
     if (!db) return;
     const chatHistoryRef = doc(db, 'progress', userId, 'chatHistory', lessonSlug);
-    const chatHistoryDoc = await getDoc(chatHistoryRef);
+    const chatHistoryDoc = await getDoc(chatHistoryDoc);
 
     if (chatHistoryDoc.exists()) {
         await updateDoc(chatHistoryRef, {

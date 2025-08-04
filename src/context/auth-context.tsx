@@ -32,7 +32,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     // This effect should only run on the client where `auth` is available.
-    if (!auth) {
+    if (typeof window === 'undefined' || !auth) {
         // We are on the server, so we just wait for the client to take over.
         // The `loading` state remains true.
         return;

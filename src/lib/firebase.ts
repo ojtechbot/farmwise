@@ -12,13 +12,12 @@ const firebaseConfig = {
   messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
 };
 
-// This variable will hold the initialized Firebase services.
-// It's declared here to be accessible within this module.
 let app: FirebaseApp;
 let auth: Auth;
 let db: Firestore;
 
 // This function ensures Firebase is initialized only on the client-side.
+// It will only be called when client-side code needs it.
 const initializeFirebase = () => {
     if (typeof window !== 'undefined') {
         if (!getApps().length) {
@@ -31,10 +30,9 @@ const initializeFirebase = () => {
     }
 };
 
-// We call the initialization function right away. 
-// The check `typeof window !== 'undefined'` ensures it only runs on the client.
+// Initialize on first load on the client.
 initializeFirebase();
 
 // We export the initialized services. 
-// On the server, these will be undefined, preventing any Firebase calls.
+// On the server, these will be undefined, and we'll guard against their use.
 export { app, auth, db };

@@ -1,7 +1,7 @@
 import { doc, setDoc, getDoc, updateDoc, arrayUnion, collection, query, where, getDocs } from 'firebase/firestore';
 import { db } from './firebase';
 import type { ChatMessage } from '@/ai/flows/tutor-flow';
-import type { Tutorial } from './types';
+import type { Tutorial, Lesson } from './types';
 
 export const saveQuizResult = async (userId: string, lessonSlug: string, score: number, totalQuestions: number) => {
   const progressRef = doc(db, 'progress', userId);
@@ -19,8 +19,6 @@ export const saveQuizResult = async (userId: string, lessonSlug: string, score: 
     const existingQuizIndex = existingQuizzes.findIndex((q: any) => q.lessonSlug === lessonSlug);
     
     if (existingQuizIndex > -1) {
-      // If a quiz for this lesson already exists, update it.
-      // This prevents creating duplicate entries if the user retakes a quiz.
       const updatedQuizzes = [...existingQuizzes];
       updatedQuizzes[existingQuizIndex] = newQuizData;
        await updateDoc(progressRef, {
@@ -91,6 +89,38 @@ export const getTutorials = async (): Promise<Tutorial[]> => {
     }
     return tutorials;
 };
+
+export const getTutorialBySlug = async (slug: string): Promise<Tutorial | undefined> => {
+  const tutorialRef = doc(db, 'tutorials', slug);
+  const tutorialDoc = await getDoc(tutorialRef);
+
+  if (!tutorialDoc.exists()) {
+    return undefined;
+  }
+
+  const tutorialData = tutorialDoc.data() as Omit<Tutorial, 'id' | 'lessons'>;
+  const lessonsCol = collection(db, 'tutorials', tutorialDoc.id, 'lessons');
+  const lessonSnapshot = await getDocs(lessonsCol);
+  const lessons = lessonSnapshot.docs.map(lessonDoc => ({ ...lessonDoc.data(), id: lessonDoc.id })) as Lesson[];
+
+  return {
+    ...tutorialData,
+    id: tutorialDoc.id,
+    lessons: lessons,
+  };
+};
+
+export const getLessonBySlug = async (slug: string): Promise<{ lesson: Lesson | undefined, tutorialSlug: string | undefined }> => {
+    const tutorials = await getTutorials();
+    for (const tutorial of tutorials) {
+        const lesson = tutorial.lessons.find(l => l.slug === slug);
+        if (lesson) {
+            return { lesson, tutorialSlug: tutorial.slug };
+        }
+    }
+    return { lesson: undefined, tutorialSlug: undefined };
+}
+
 
 // Helper function to upload initial data to Firestore.
 // You can call this from a script or a secure admin page.

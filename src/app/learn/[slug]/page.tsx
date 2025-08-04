@@ -1,8 +1,11 @@
-import { getTutorials } from '@/lib/db';
-import { notFound } from 'next/navigation';
+'use client';
+
+import { useEffect, useState } from 'react';
+import { getTutorialBySlug } from '@/lib/db';
+import { notFound, useParams } from 'next/navigation';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { ArrowRight, ChevronLeft, BookOpen, Video, ListChecks } from 'lucide-react';
+import { ArrowRight, ChevronLeft, BookOpen, Video, ListChecks, Loader2 } from 'lucide-react';
 import Link from 'next/link';
 import { AiTutor } from '@/components/ai-tutor';
 import {
@@ -13,32 +16,66 @@ import {
 } from "@/components/ui/accordion"
 import { Sparkles } from 'lucide-react';
 import type { Tutorial } from '@/lib/types';
+import { Skeleton } from '@/components/ui/skeleton';
 
 
-export async function generateStaticParams() {
-  const tutorials = await getTutorials();
-  const params: { slug: string }[] = [];
-  tutorials.forEach(tutorial => {
-      params.push({ slug: tutorial.slug });
-  });
-  return params;
-}
+export default function LearnPage() {
+  const params = useParams();
+  const slug = params.slug as string;
+  const [tutorial, setTutorial] = useState<Tutorial | null>(null);
+  const [loading, setLoading] = useState(true);
+  
+  useEffect(() => {
+    if (!slug) return;
+    const fetchTutorial = async () => {
+      setLoading(true);
+      try {
+        const fetchedTutorial = await getTutorialBySlug(slug);
+        if (fetchedTutorial) {
+          setTutorial(fetchedTutorial);
+        } else {
+          setTutorial(null); // Explicitly set to null if not found
+        }
+      } catch (error) {
+        console.error("Failed to fetch tutorial", error);
+        setTutorial(null);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchTutorial();
+  }, [slug]);
 
-async function getTutorialBySlug(slug: string): Promise<Tutorial | undefined> {
-  const tutorials = await getTutorials();
-  return tutorials.find((tutorial) => tutorial.slug === slug);
-}
-
-
-export default async function LearnPage({ params }: { params: { slug: string } }) {
-  const tutorial = await getTutorialBySlug(params.slug);
+  if (loading) {
+     return (
+      <div className="mx-auto max-w-4xl space-y-8">
+        <Skeleton className="h-8 w-1/4" />
+        <Skeleton className="h-12 w-3/4" />
+        <Skeleton className="h-6 w-1/2" />
+        <Card>
+          <CardHeader>
+            <Skeleton className="h-6 w-1/3" />
+          </CardHeader>
+          <CardContent>
+             <Skeleton className="h-48 w-full" />
+          </CardContent>
+        </Card>
+         <Card>
+          <CardHeader>
+            <Skeleton className="h-6 w-1/3" />
+          </CardHeader>
+          <CardContent>
+             <Skeleton className="h-24 w-full" />
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
 
   if (!tutorial) {
     notFound();
   }
 
-  // For this example, we'll display the first lesson.
-  // A more complex app would have routing for each lesson, e.g., /learn/[slug]/[lesson-slug]
   const lesson = tutorial.lessons[0];
   if (!lesson) {
     return (

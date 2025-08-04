@@ -1,35 +1,78 @@
-import { getTutorials } from '@/lib/db';
-import { notFound } from 'next/navigation';
+'use client';
+
+import { useEffect, useState } from 'react';
+import { getLessonBySlug } from '@/lib/db';
+import { notFound, useParams } from 'next/navigation';
 import { QuizForm } from '@/components/quiz-form';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { ChevronLeft } from 'lucide-react';
 import type { Lesson } from '@/lib/types';
+import { Skeleton } from '@/components/ui/skeleton';
 
-export async function generateStaticParams() {
-  const tutorials = await getTutorials();
-  const params: { slug: string }[] = [];
-  tutorials.forEach(tutorial => {
-    tutorial.lessons.forEach(lesson => {
-      params.push({ slug: lesson.slug });
-    });
-  });
-  return params;
-}
+export default function QuizPage() {
+  const params = useParams();
+  const slug = params.slug as string;
+  const [lesson, setLesson] = useState<Lesson | null>(null);
+  const [tutorialSlug, setTutorialSlug] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
 
-async function getLessonBySlug(slug: string): Promise<{ lesson: Lesson | undefined, tutorialSlug: string | undefined }> {
-    const tutorials = await getTutorials();
-    for (const tutorial of tutorials) {
-        const lesson = tutorial.lessons.find(l => l.slug === slug);
-        if (lesson) {
-            return { lesson, tutorialSlug: tutorial.slug };
+  useEffect(() => {
+    if (!slug) return;
+
+    const fetchLesson = async () => {
+      setLoading(true);
+      try {
+        const result = await getLessonBySlug(slug);
+        if (result.lesson && result.tutorialSlug) {
+          setLesson(result.lesson);
+          setTutorialSlug(result.tutorialSlug);
+        } else {
+          setLesson(null);
+          setTutorialSlug(null);
         }
-    }
-    return { lesson: undefined, tutorialSlug: undefined };
-}
+      } catch (error) {
+        console.error("Failed to fetch lesson", error);
+        setLesson(null);
+        setTutorialSlug(null);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-export default async function QuizPage({ params }: { params: { slug:string } }) {
-  const { lesson, tutorialSlug } = await getLessonBySlug(params.slug);
+    fetchLesson();
+  }, [slug]);
+
+  if (loading) {
+    return (
+      <div className="mx-auto max-w-2xl space-y-8">
+        <Skeleton className="h-8 w-1/4" />
+        <div className="text-center">
+            <Skeleton className="h-10 w-3/4 mx-auto" />
+            <Skeleton className="h-6 w-1/2 mx-auto mt-2" />
+        </div>
+        <div className="space-y-8">
+            <Card>
+                <CardHeader><Skeleton className="h-6 w-3/4" /></CardHeader>
+                <CardContent className="space-y-4">
+                    <Skeleton className="h-10 w-full" />
+                    <Skeleton className="h-10 w-full" />
+                    <Skeleton className="h-10 w-full" />
+                </CardContent>
+            </Card>
+             <Card>
+                <CardHeader><Skeleton className="h-6 w-3/4" /></CardHeader>
+                <CardContent className="space-y-4">
+                    <Skeleton className="h-10 w-full" />
+                    <Skeleton className="h-10 w-full" />
+                    <Skeleton className="h-10 w-full" />
+                </CardContent>
+            </Card>
+        </div>
+
+      </div>
+    )
+  }
 
   if (!lesson || !tutorialSlug) {
     notFound();

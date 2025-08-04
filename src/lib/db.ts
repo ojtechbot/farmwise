@@ -1,23 +1,14 @@
+'use client';
 import { doc, setDoc, getDoc, updateDoc, arrayUnion, collection, query, where, getDocs, onSnapshot, Unsubscribe } from 'firebase/firestore';
-import { getFirebase } from './firebase';
+import { getFirebaseFirestore } from './firebase';
 import type { ChatMessage } from '@/ai/flows/tutor-flow';
 import type { Tutorial, Lesson } from './types';
 
-// Each function now uses a getDb utility to ensure Firestore is only accessed on the client.
-const getDb = () => {
-  const { db } = getFirebase();
-  if (!db) {
-    // This can happen during server-side rendering, return a mock or handle as needed.
-    // For our case, we will ensure these functions are only called client-side.
-    return null;
-  }
-  return db;
-}
-
+// This function now relies on the consumer to provide the db instance.
+// This enforces client-side only usage.
 
 export const saveQuizResult = async (userId: string, lessonSlug: string, score: number, totalQuestions: number) => {
-  const db = getDb();
-  if (!db) return;
+  const db = getFirebaseFirestore();
 
   const progressRef = doc(db, 'progress', userId);
   const progressDoc = await getDoc(progressRef);
@@ -54,8 +45,7 @@ export const saveQuizResult = async (userId: string, lessonSlug: string, score: 
 };
 
 export const getUserProgress = async (userId: string) => {
-    const db = getDb();
-    if (!db) return null;
+    const db = getFirebaseFirestore();
     const progressRef = doc(db, 'progress', userId);
     const progressDoc = await getDoc(progressRef);
     if (progressDoc.exists()) {
@@ -65,8 +55,7 @@ export const getUserProgress = async (userId: string) => {
 }
 
 export const getLessonChatHistory = async (userId: string, lessonSlug: string): Promise<ChatMessage[]> => {
-    const db = getDb();
-    if (!db) return [];
+    const db = getFirebaseFirestore();
     const chatHistoryRef = doc(db, 'progress', userId, 'chatHistory', lessonSlug);
     const chatHistoryDoc = await getDoc(chatHistoryRef);
     if(chatHistoryDoc.exists()) {
@@ -76,8 +65,7 @@ export const getLessonChatHistory = async (userId: string, lessonSlug: string): 
 }
 
 export const saveLessonChatMessage = async (userId: string, lessonSlug: string, message: ChatMessage) => {
-    const db = getDb();
-    if (!db) return;
+    const db = getFirebaseFirestore();
     const chatHistoryRef = doc(db, 'progress', userId, 'chatHistory', lessonSlug);
     const chatHistoryDoc = await getDoc(chatHistoryRef);
 
@@ -93,8 +81,7 @@ export const saveLessonChatMessage = async (userId: string, lessonSlug: string, 
 }
 
 export const getTutorialsRealtime = (callback: (tutorials: Tutorial[]) => void): Unsubscribe => {
-    const db = getDb();
-    if (!db) return () => {}; // Return an empty unsubscribe function if db is not available
+    const db = getFirebaseFirestore();
     const tutorialsCol = collection(db, 'tutorials');
     
     const unsubscribe = onSnapshot(tutorialsCol, async (tutorialSnapshot) => {
@@ -133,8 +120,7 @@ export const getTutorialsRealtime = (callback: (tutorials: Tutorial[]) => void):
 };
 
 export const getTutorialBySlug = async (slug: string): Promise<Tutorial | null> => {
-    const db = getDb();
-    if (!db) return null;
+    const db = getFirebaseFirestore();
 
     const q = query(collection(db, "tutorials"), where("slug", "==", slug));
     const querySnapshot = await getDocs(q);
@@ -158,8 +144,7 @@ export const getTutorialBySlug = async (slug: string): Promise<Tutorial | null> 
 };
 
 export const getLessonBySlug = async (slug: string): Promise<{ lesson: Lesson | null, tutorialSlug: string | null }> => {
-    const db = getDb();
-    if (!db) return { lesson: null, tutorialSlug: null };
+    const db = getFirebaseFirestore();
 
     const q = query(collection(db, "tutorials"));
     const querySnapshot = await getDocs(q);
@@ -181,8 +166,7 @@ export const getLessonBySlug = async (slug: string): Promise<{ lesson: Lesson | 
 }
 
 export const getTutorials = async (): Promise<Tutorial[]> => {
-    const db = getDb();
-    if (!db) return [];
+    const db = getFirebaseFirestore();
     const tutorialsCol = collection(db, 'tutorials');
     const tutorialSnapshot = await getDocs(tutorialsCol);
     const tutorials: Tutorial[] = [];

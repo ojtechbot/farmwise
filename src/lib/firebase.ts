@@ -11,25 +11,23 @@ const firebaseConfig = {
   messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
 };
 
-let app: FirebaseApp;
-let auth: Auth;
-let db: Firestore;
-
-function getFirebase() {
-  if (typeof window === "undefined") {
-    return { app: null, auth: null, db: null };
+// This function ensures Firebase is initialized only once
+function getFirebaseApp(): FirebaseApp {
+  if (getApps().length > 0) {
+    return getApp();
   }
-
-  if (getApps().length === 0) {
-    app = initializeApp(firebaseConfig);
-    auth = getAuth(app);
-    db = getFirestore(app);
-  } else {
-    app = getApp();
-    auth = getAuth(app);
-    db = getFirestore(app);
-  }
-  return { app, auth, db };
+  return initializeApp(firebaseConfig);
 }
 
-export { getFirebase };
+// These functions provide instances of Firebase services.
+// They will only be called on the client side, after initialization.
+function getFirebaseAuth(): Auth {
+  return getAuth(getFirebaseApp());
+}
+
+function getFirebaseFirestore(): Firestore {
+  return getFirestore(getFirebaseApp());
+}
+
+
+export { getFirebaseApp, getFirebaseAuth, getFirebaseFirestore };

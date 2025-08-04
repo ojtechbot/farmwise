@@ -1,7 +1,11 @@
+
 import { doc, setDoc, getDoc, updateDoc, arrayUnion, collection, query, where, getDocs } from 'firebase/firestore';
 import { db } from './firebase';
 import type { ChatMessage } from '@/ai/flows/tutor-flow';
 import type { Tutorial, Lesson } from './types';
+
+// Each function now checks if 'db' is initialized before proceeding.
+// This is an extra safeguard to prevent server-side execution.
 
 export const saveQuizResult = async (userId: string, lessonSlug: string, score: number, totalQuestions: number) => {
   if (!db) {

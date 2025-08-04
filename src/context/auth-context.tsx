@@ -1,3 +1,4 @@
+
 'use client';
 
 import React, { createContext, useContext, useEffect, useState, ReactNode } from 'react';
@@ -30,18 +31,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // auth might be undefined on first render, so we wait for it
+    // This check is crucial. We wait for Firebase to be initialized on the client.
     if (!auth) {
-        // We can add a small delay to see if firebase initializes
-        const timer = setTimeout(() => {
-            if (!auth) setLoading(false);
-        }, 1000);
-        return () => clearTimeout(timer);
+        setLoading(true);
+        return;
     }
     
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
-        // Get user data from Firestore
         const userDoc = await getDoc(doc(db, 'users', user.uid));
         if (userDoc.exists()) {
           setUser({ ...user, ...userDoc.data() });
@@ -98,13 +95,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
-
   const signOut = async () => {
     if (!auth) throw new Error("Firebase not initialized");
     await firebaseSignOut(auth);
     setUser(null);
   };
 
+  // The preloader now reliably shows until the auth state is confirmed on the client.
   if (loading) {
     return <Preloader />;
   }

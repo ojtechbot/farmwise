@@ -1,3 +1,4 @@
+
 'use client';
 import { useState, useEffect } from 'react';
 import { Input } from '@/components/ui/input';
@@ -27,15 +28,13 @@ export function DashboardClient() {
   const [tutorials, setTutorials] = useState<Tutorial[]>([]);
   const [loading, setLoading] = useState(true);
 
-  const totalLessons = tutorials.reduce((acc, t) => acc + t.lessons.length, 0);
-
   useEffect(() => {
     const fetchTutorialsAndProgress = async () => {
       setLoading(true);
       try {
         const fetchedTutorials = await getTutorials();
         setTutorials(fetchedTutorials);
-        const totalLessonsCount = fetchedTutorials.reduce((acc, t) => acc + t.lessons.length, 0);
+        const totalLessonsCount = fetchedTutorials.reduce((acc, t) => acc + (t.lessons?.length || 0), 0);
 
         if(user && totalLessonsCount > 0) {
           const userProgress = await getUserProgress(user.uid);
@@ -54,7 +53,8 @@ export function DashboardClient() {
     }
     fetchTutorialsAndProgress();
   }, [user]);
-
+  
+  const totalLessons = tutorials.reduce((acc, t) => acc + (t.lessons?.length || 0), 0);
 
   const filteredTutorials = tutorials.filter((tutorial) => {
     const matchesCategory =

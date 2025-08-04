@@ -1,4 +1,3 @@
-'use client';
 
 import { initializeApp, getApps, getApp, FirebaseApp } from "firebase/app";
 import { getAuth, Auth } from "firebase/auth";
@@ -17,14 +16,19 @@ let app: FirebaseApp;
 let auth: Auth;
 let db: Firestore;
 
-if (typeof window !== 'undefined') {
-  if (!getApps().length) {
-    app = initializeApp(firebaseConfig);
-  } else {
-    app = getApp();
+// This function ensures that Firebase is initialized only once and only on the client side.
+const initializeFirebase = () => {
+  if (typeof window !== 'undefined') {
+    if (!getApps().length) {
+      app = initializeApp(firebaseConfig);
+    } else {
+      app = getApp();
+    }
+    auth = getAuth(app);
+    db = getFirestore(app);
   }
-  auth = getAuth(app);
-  db = getFirestore(app);
-}
+};
+
+initializeFirebase();
 
 export { app, auth, db };

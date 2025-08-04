@@ -13,7 +13,7 @@ import {
 } from 'firebase/auth';
 import { doc, setDoc, getDoc } from 'firebase/firestore';
 import { auth, db } from '../lib/firebase';
-import { Preloader } from '@/components/preloader';
+import { Loader2 } from 'lucide-react';
 
 interface AuthContextType {
   user: User | null;
@@ -31,11 +31,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // This effect should only run on the client where `auth` is available.
-    if (typeof window === 'undefined' || !auth) {
-        // We are on the server, so we just wait for the client to take over.
-        // The `loading` state remains true.
-        return;
+    if (!auth) {
+      setLoading(false);
+      return;
     }
     
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
@@ -45,7 +43,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         if (userDoc.exists()) {
           setUser({ ...user, ...userDoc.data() });
         } else {
-          // This case handles users who signed up but might not have a doc yet (e.g. Google sign-in)
            await setDoc(userDocRef, {
              email: user.email,
              displayName: user.displayName,
@@ -95,7 +92,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         photoURL: user.photoURL,
       });
     }
-    // Auth state listener will handle setting the user
   };
 
   const signOut = async () => {
@@ -105,7 +101,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   if (loading) {
-    return <Preloader />;
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-background">
+        <Loader2 className="h-10 w-10 animate-spin text-primary" />
+      </div>
+    );
   }
 
   return (

@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
@@ -13,6 +14,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { cn } from '@/lib/utils';
 import { getUserProgress, getLessonChatHistory, saveLessonChatMessage } from '@/lib/db';
 import { useToast } from '@/hooks/use-toast';
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 
 interface AiTutorProps {
   lesson: Lesson;
@@ -50,7 +52,6 @@ export function AiTutor({ lesson }: AiTutorProps) {
 
 
   useEffect(() => {
-    // Scroll to the bottom when messages change
     if (scrollAreaRef.current) {
         const viewport = scrollAreaRef.current.querySelector('[data-radix-scroll-area-viewport]');
         if (viewport) {
@@ -82,10 +83,10 @@ export function AiTutor({ lesson }: AiTutorProps) {
         lessonContent: lesson.content,
         userProfile: {
           displayName: user.displayName || 'student',
-          interests: 'farming', // Placeholder
+          interests: 'farming', 
         },
         learningProgress: progressSummary,
-        chatHistory: newMessages.slice(0, -1), // Send history without the latest message
+        chatHistory: newMessages.slice(0, -1),
         userMessage: input,
       });
 
@@ -187,18 +188,3 @@ export function AiTutor({ lesson }: AiTutorProps) {
     </Card>
   );
 }
-
-// Minimal Avatar component parts for AiTutor
-const Avatar = ({ className, ...props }: React.HTMLAttributes<HTMLSpanElement>) => (
-  <span
-    className={cn("relative flex h-10 w-10 shrink-0 overflow-hidden rounded-full", className)}
-    {...props}
-  />
-);
-
-const AvatarFallback = ({ className, ...props }: React.HTMLAttributes<HTMLSpanElement>) => (
-  <span
-    className={cn("flex h-full w-full items-center justify-center rounded-full bg-muted", className)}
-    {...props}
-  />
-);

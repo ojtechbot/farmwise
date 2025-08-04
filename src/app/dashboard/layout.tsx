@@ -23,7 +23,7 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
-  const { user, loading } = useAuth();
+  const { user, loading, signOut } = useAuth();
   const router = useRouter();
 
   useEffect(() => {
@@ -35,6 +35,11 @@ export default function DashboardLayout({
   if (loading || !user) {
     return null; // Or a loading spinner
   }
+
+  const handleSignOut = async () => {
+    await signOut();
+    router.push('/login');
+  };
 
   return (
     <SidebarProvider>
@@ -82,11 +87,9 @@ export default function DashboardLayout({
         <SidebarFooter>
            <SidebarMenu>
             <SidebarMenuItem>
-              <SidebarMenuButton asChild>
-                <Link href="/">
+              <SidebarMenuButton onClick={handleSignOut}>
                   <LogOut/>
                   Logout
-                </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>
            </SidebarMenu>

@@ -10,12 +10,14 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { CreditCard, LogOut, Settings, User } from "lucide-react"
+import { LogOut, Settings, User } from "lucide-react"
 import Link from "next/link"
 import { useAuth } from "@/context/auth-context"
+import { useRouter } from "next/navigation";
 
 export function UserNav() {
   const { user, signOut } = useAuth();
+  const router = useRouter();
 
   if (!user) {
     return (
@@ -24,6 +26,11 @@ export function UserNav() {
         </Button>
     )
   }
+
+  const handleSignOut = async () => {
+    await signOut();
+    router.push('/login');
+  };
 
   return (
     <DropdownMenu>
@@ -56,7 +63,7 @@ export function UserNav() {
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={signOut}>
+        <DropdownMenuItem onClick={handleSignOut}>
             <LogOut className="mr-2 h-4 w-4" />
             <span>Log out</span>
         </DropdownMenuItem>

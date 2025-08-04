@@ -30,11 +30,15 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // auth will be undefined on the server, so onAuthStateChanged will not be called
+    // auth might be undefined on first render, so we wait for it
     if (!auth) {
-      setLoading(false);
-      return;
+        // We can add a small delay to see if firebase initializes
+        const timer = setTimeout(() => {
+            if (!auth) setLoading(false);
+        }, 1000);
+        return () => clearTimeout(timer);
     }
+    
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
         // Get user data from Firestore
@@ -54,10 +58,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   const signUpWithEmail = async (email: string, password: string, userData: { [key: string]: any }) => {
+    if (!auth || !db) throw new Error("Firebase not initialized");
     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
     const user = userCredential.user;
     await setDoc(doc(db, 'users', user.uid), {
       email: user.email,
+      displayName: `${userData.firstName} ${userData.lastName}`,
       ...userData,
     });
     const userDoc = await getDoc(doc(db, 'users', user.uid));
@@ -65,10 +71,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const signInWithEmail = async (email: string, password: string) => {
+    if (!auth) throw new Error("Firebase not initialized");
     await signInWithEmailAndPassword(auth, email, password);
   };
 
   const signInWithGoogle = async () => {
+    if (!auth || !db) throw new Error("Firebase not initialized");
     const provider = new GoogleAuthProvider();
     const userCredential = await signInWithPopup(auth, provider);
     const user = userCredential.user;
@@ -92,6 +100,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
 
   const signOut = async () => {
+    if (!auth) throw new Error("Firebase not initialized");
     await firebaseSignOut(auth);
     setUser(null);
   };

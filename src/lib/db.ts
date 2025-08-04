@@ -1,10 +1,13 @@
-
 import { doc, setDoc, getDoc, updateDoc, arrayUnion, collection, query, where, getDocs } from 'firebase/firestore';
 import { db } from './firebase';
 import type { ChatMessage } from '@/ai/flows/tutor-flow';
 import type { Tutorial, Lesson } from './types';
 
 export const saveQuizResult = async (userId: string, lessonSlug: string, score: number, totalQuestions: number) => {
+  if (!db) {
+    console.error("Firestore is not initialized.");
+    return;
+  }
   const progressRef = doc(db, 'progress', userId);
   const progressDoc = await getDoc(progressRef);
 
@@ -40,6 +43,7 @@ export const saveQuizResult = async (userId: string, lessonSlug: string, score: 
 };
 
 export const getUserProgress = async (userId: string) => {
+    if (!db) return null;
     const progressRef = doc(db, 'progress', userId);
     const progressDoc = await getDoc(progressRef);
     if (progressDoc.exists()) {
@@ -49,6 +53,7 @@ export const getUserProgress = async (userId: string) => {
 }
 
 export const getLessonChatHistory = async (userId: string, lessonSlug: string): Promise<ChatMessage[]> => {
+    if (!db) return [];
     const chatHistoryRef = doc(db, 'progress', userId, 'chatHistory', lessonSlug);
     const chatHistoryDoc = await getDoc(chatHistoryRef);
     if(chatHistoryDoc.exists()) {
@@ -58,6 +63,7 @@ export const getLessonChatHistory = async (userId: string, lessonSlug: string): 
 }
 
 export const saveLessonChatMessage = async (userId: string, lessonSlug: string, message: ChatMessage) => {
+    if (!db) return;
     const chatHistoryRef = doc(db, 'progress', userId, 'chatHistory', lessonSlug);
     const chatHistoryDoc = await getDoc(chatHistoryRef);
 
@@ -73,6 +79,7 @@ export const saveLessonChatMessage = async (userId: string, lessonSlug: string, 
 }
 
 export const getTutorials = async (): Promise<Tutorial[]> => {
+    if (!db) return [];
     const tutorialsCol = collection(db, 'tutorials');
     const tutorialSnapshot = await getDocs(tutorialsCol);
     const tutorials: Tutorial[] = [];
@@ -108,6 +115,7 @@ export const getTutorials = async (): Promise<Tutorial[]> => {
 };
 
 export const getTutorialBySlug = async (slug: string): Promise<Tutorial | null> => {
+    if (!db) return null;
     const q = query(collection(db, "tutorials"), where("slug", "==", slug));
     const querySnapshot = await getDocs(q);
 
@@ -130,6 +138,7 @@ export const getTutorialBySlug = async (slug: string): Promise<Tutorial | null> 
 };
 
 export const getLessonBySlug = async (slug: string): Promise<{ lesson: Lesson | null, tutorialSlug: string | null }> => {
+    if (!db) return { lesson: null, tutorialSlug: null };
     const q = query(collection(db, "tutorials"));
     const querySnapshot = await getDocs(q);
 

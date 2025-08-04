@@ -1,3 +1,4 @@
+'use client';
 
 import { initializeApp, getApps, getApp, FirebaseApp } from "firebase/app";
 import { getAuth, Auth } from "firebase/auth";
@@ -12,26 +13,18 @@ const firebaseConfig = {
   messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
 };
 
-
 let app: FirebaseApp;
 let auth: Auth;
 let db: Firestore;
 
-// This function ensures that Firebase is only initialized on the client side.
-function initializeFirebase() {
-  if (typeof window !== 'undefined') {
-    if (!getApps().length) {
-      app = initializeApp(firebaseConfig);
-    } else {
-      app = getApp();
-    }
-    auth = getAuth(app);
-    db = getFirestore(app);
+if (typeof window !== 'undefined') {
+  if (!getApps().length) {
+    app = initializeApp(firebaseConfig);
+  } else {
+    app = getApp();
   }
+  auth = getAuth(app);
+  db = getFirestore(app);
 }
-
-// Call the function to initialize Firebase.
-// This will only execute on the client.
-initializeFirebase();
 
 export { app, auth, db };

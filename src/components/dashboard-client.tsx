@@ -12,11 +12,11 @@ import { Progress } from '@/components/ui/progress';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { TutorialCard } from '@/components/tutorial-card';
 import { AiSuggestionCard } from '@/components/ai-suggestion-card';
-import { tutorials } from '@/lib/data';
 import type { Tutorial } from '@/lib/types';
 import { BookOpen, Target, Search } from 'lucide-react';
 import { useAuth } from '@/context/auth-context';
-import { getUserProgress } from '@/lib/db';
+import { getUserProgress, getTutorials } from '@/lib/db';
+import { Skeleton } from './ui/skeleton';
 
 export function DashboardClient() {
   const [searchTerm, setSearchTerm] = useState('');
@@ -24,24 +24,37 @@ export function DashboardClient() {
   const [progress, setProgress] = useState(0);
   const [completedModules, setCompletedModules] = useState(0);
   const { user } = useAuth();
+  const [tutorials, setTutorials] = useState<Tutorial[]>([]);
+  const [loading, setLoading] = useState(true);
 
   const totalLessons = tutorials.reduce((acc, t) => acc + t.lessons.length, 0);
 
   useEffect(() => {
-    const fetchProgress = async () => {
-      if(user && totalLessons > 0) {
-        const userProgress = await getUserProgress(user.uid);
-        if (userProgress && userProgress.quizzes) {
-          // Use a Set to count unique completed lessons
-          const completedSlugs = new Set(userProgress.quizzes.map((q: any) => q.lessonSlug));
-          const completedCount = completedSlugs.size;
-          setCompletedModules(completedCount);
-          setProgress(Math.round((completedCount / totalLessons) * 100));
+    const fetchTutorialsAndProgress = async () => {
+      setLoading(true);
+      try {
+        const fetchedTutorials = await getTutorials();
+        setTutorials(fetchedTutorials);
+        const totalLessonsCount = fetchedTutorials.reduce((acc, t) => acc + t.lessons.length, 0);
+
+        if(user && totalLessonsCount > 0) {
+          const userProgress = await getUserProgress(user.uid);
+          if (userProgress && userProgress.quizzes) {
+            const completedSlugs = new Set(userProgress.quizzes.map((q: any) => q.lessonSlug));
+            const completedCount = completedSlugs.size;
+            setCompletedModules(completedCount);
+            setProgress(Math.round((completedCount / totalLessonsCount) * 100));
+          }
         }
+      } catch (error) {
+        console.error("Failed to fetch data", error);
+      } finally {
+        setLoading(false);
       }
     }
-    fetchProgress();
-  }, [user, totalLessons]);
+    fetchTutorialsAndProgress();
+  }, [user]);
+
 
   const filteredTutorials = tutorials.filter((tutorial) => {
     const matchesCategory =
@@ -72,10 +85,13 @@ export function DashboardClient() {
             <Target className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{progress}%</div>
+            {loading ? <Skeleton className="h-8 w-1/4 my-1" /> : <div className="text-2xl font-bold">{progress}%</div>}
+            
+            {loading ? <Skeleton className="h-4 w-full" /> : 
             <p className="text-xs text-muted-foreground">
               You've completed {completedModules} of {totalLessons} lessons
             </p>
+            }
             <Progress value={progress} className="mt-2" />
           </CardContent>
         </Card>
@@ -87,10 +103,11 @@ export function DashboardClient() {
             <BookOpen className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{totalTutorials}</div>
+             {loading ? <Skeleton className="h-8 w-1/4 my-1" /> : <div className="text-2xl font-bold">{totalTutorials}</div>}
+             {loading ? <Skeleton className="h-4 w-full" /> :
             <p className="text-xs text-muted-foreground">
               modules available across all categories
-            </p>
+            </p>}
           </CardContent>
         </Card>
         <div className="lg:col-span-1">
@@ -124,7 +141,19 @@ export function DashboardClient() {
           </Select>
         </div>
 
-        {filteredTutorials.length > 0 ? (
+        {loading ? (
+           <div className="grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+             {Array.from({ length: 3 }).map((_, index) => (
+                <div key={index} className="flex flex-col gap-4">
+                  <Skeleton className="h-48 w-full" />
+                  <Skeleton className="h-4 w-1/4" />
+                  <Skeleton className="h-6 w-3/4" />
+                  <Skeleton className="h-4 w-full" />
+                  <Skeleton className="h-10 w-full" />
+                </div>
+              ))}
+           </div>
+        ) : filteredTutorials.length > 0 ? (
           <div className="grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
             {filteredTutorials.map((tutorial) => (
               <TutorialCard key={tutorial.id} tutorial={tutorial} />

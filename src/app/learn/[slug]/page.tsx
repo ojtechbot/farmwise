@@ -1,4 +1,4 @@
-import { tutorials } from '@/lib/data';
+import { getTutorials } from '@/lib/db';
 import { notFound } from 'next/navigation';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -12,9 +12,11 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion"
 import { Sparkles } from 'lucide-react';
+import type { Tutorial } from '@/lib/types';
 
 
 export async function generateStaticParams() {
+  const tutorials = await getTutorials();
   const params: { slug: string }[] = [];
   tutorials.forEach(tutorial => {
       params.push({ slug: tutorial.slug });
@@ -22,13 +24,14 @@ export async function generateStaticParams() {
   return params;
 }
 
-function getTutorialBySlug(slug: string) {
+async function getTutorialBySlug(slug: string): Promise<Tutorial | undefined> {
+  const tutorials = await getTutorials();
   return tutorials.find((tutorial) => tutorial.slug === slug);
 }
 
 
-export default function LearnPage({ params }: { params: { slug: string } }) {
-  const tutorial = getTutorialBySlug(params.slug);
+export default async function LearnPage({ params }: { params: { slug: string } }) {
+  const tutorial = await getTutorialBySlug(params.slug);
 
   if (!tutorial) {
     notFound();

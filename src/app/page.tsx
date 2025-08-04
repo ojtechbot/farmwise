@@ -1,13 +1,38 @@
+'use client';
 import { Button } from '@/components/ui/button';
-import { Leaf, Droplets } from 'lucide-react';
+import { Leaf, Droplets, BookOpen } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { TutorialCard } from '@/components/tutorial-card';
+import { useEffect, useState } from 'react';
+import { getTutorials } from '@/lib/db';
+import type { Tutorial } from '@/lib/types';
+import { Skeleton } from '@/components/ui/skeleton';
 
 export default function Home() {
+  const [tutorials, setTutorials] = useState<Tutorial[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchTutorials = async () => {
+      try {
+        const fetchedTutorials = await getTutorials();
+        setTutorials(fetchedTutorials);
+      } catch (error) {
+        console.error("Failed to fetch tutorials", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchTutorials();
+  }, []);
+
+
   return (
     <div className="flex flex-col min-h-screen">
       <header className="px-4 lg:px-6 h-14 flex items-center">
-        <Link href="#" className="flex items-center justify-center" prefetch={false}>
+        <Link href="/" className="flex items-center justify-center" prefetch={false}>
           <Leaf className="h-6 w-6 text-primary" />
           <span className="ml-2 text-xl font-bold">FarmWise</span>
         </Link>
@@ -56,7 +81,43 @@ export default function Home() {
             </div>
           </div>
         </section>
-        <section className="w-full py-12 md:py-24 lg:py-32 bg-secondary">
+        
+        <section id="courses" className="w-full py-12 md:py-24 lg:py-32 bg-secondary">
+          <div className="container px-4 md:px-6">
+            <div className="flex flex-col items-center justify-center space-y-4 text-center">
+              <div className="space-y-2">
+                <div className="inline-block rounded-lg bg-muted px-3 py-1 text-sm">Our Courses</div>
+                <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">Explore Our Tutorials</h2>
+                <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
+                  Our platform is tailored to the needs of modern agriculture and aquaculture. Jump into a lesson and start your journey.
+                </p>
+              </div>
+            </div>
+            <div className="mx-auto grid max-w-5xl items-start gap-8 sm:grid-cols-2 md:gap-12 lg:grid-cols-3 lg:gap-16 mt-12">
+              {loading ? (
+                 Array.from({ length: 3 }).map((_, index) => (
+                  <div key={index} className="flex flex-col gap-4">
+                    <Skeleton className="h-48 w-full" />
+                    <Skeleton className="h-4 w-1/4" />
+                    <Skeleton className="h-6 w-3/4" />
+                    <Skeleton className="h-4 w-full" />
+                    <Skeleton className="h-10 w-full" />
+                  </div>
+                ))
+              ) : tutorials.length > 0 ? (
+                tutorials.map((tutorial) => (
+                  <TutorialCard key={tutorial.id} tutorial={tutorial} />
+                ))
+              ) : (
+                 <div className="col-span-full text-center text-muted-foreground">
+                    <p>No courses available at the moment. Please check back later.</p>
+                 </div>
+              )}
+            </div>
+          </div>
+        </section>
+        
+        <section className="w-full py-12 md:py-24">
           <div className="container px-4 md:px-6">
             <div className="flex flex-col items-center justify-center space-y-4 text-center">
               <div className="space-y-2">
@@ -82,24 +143,10 @@ export default function Home() {
                 </p>
               </div>
               <div className="grid gap-1 text-center">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="h-8 w-8 mx-auto text-primary"
-                >
-                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-                  <path d="m9 12 2 2 4-4" />
-                </svg>
-                <h3 className="text-lg font-bold">Assessments</h3>
+                <BookOpen className="h-8 w-8 mx-auto text-primary" />
+                <h3 className="text-lg font-bold">AI-Powered Learning</h3>
                 <p className="text-sm text-muted-foreground">
-                  Test your knowledge with quizzes and track your learning progress.
+                   Our AI Tutor helps you understand complex topics and guides you through your learning journey.
                 </p>
               </div>
             </div>

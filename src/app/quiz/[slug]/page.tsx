@@ -1,4 +1,4 @@
-import { tutorials } from '@/lib/data';
+import { getTutorials } from '@/lib/db';
 import { notFound } from 'next/navigation';
 import { QuizForm } from '@/components/quiz-form';
 import Link from 'next/link';
@@ -7,6 +7,7 @@ import { ChevronLeft } from 'lucide-react';
 import type { Lesson } from '@/lib/types';
 
 export async function generateStaticParams() {
+  const tutorials = await getTutorials();
   const params: { slug: string }[] = [];
   tutorials.forEach(tutorial => {
     tutorial.lessons.forEach(lesson => {
@@ -16,7 +17,8 @@ export async function generateStaticParams() {
   return params;
 }
 
-function getLessonBySlug(slug: string): { lesson: Lesson | undefined, tutorialSlug: string | undefined } {
+async function getLessonBySlug(slug: string): Promise<{ lesson: Lesson | undefined, tutorialSlug: string | undefined }> {
+    const tutorials = await getTutorials();
     for (const tutorial of tutorials) {
         const lesson = tutorial.lessons.find(l => l.slug === slug);
         if (lesson) {
@@ -26,8 +28,8 @@ function getLessonBySlug(slug: string): { lesson: Lesson | undefined, tutorialSl
     return { lesson: undefined, tutorialSlug: undefined };
 }
 
-export default function QuizPage({ params }: { params: { slug:string } }) {
-  const { lesson, tutorialSlug } = getLessonBySlug(params.slug);
+export default async function QuizPage({ params }: { params: { slug:string } }) {
+  const { lesson, tutorialSlug } = await getLessonBySlug(params.slug);
 
   if (!lesson || !tutorialSlug) {
     notFound();

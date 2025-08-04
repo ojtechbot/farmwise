@@ -5,7 +5,7 @@ import { getTutorialBySlug } from '@/lib/db';
 import { notFound, useParams } from 'next/navigation';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { ArrowRight, ChevronLeft, BookOpen, Video, ListChecks, Loader2 } from 'lucide-react';
+import { ArrowRight, ChevronLeft, BookOpen, Video, ListChecks } from 'lucide-react';
 import Link from 'next/link';
 import { AiTutor } from '@/components/ai-tutor';
 import {

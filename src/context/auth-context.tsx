@@ -30,6 +30,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    // auth will be undefined on the server, so onAuthStateChanged will not be called
+    if (!auth) {
+      setLoading(false);
+      return;
+    }
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
         // Get user data from Firestore
@@ -55,7 +60,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       email: user.email,
       ...userData,
     });
-    setUser({ ...user, ...userData });
+    const userDoc = await getDoc(doc(db, 'users', user.uid));
+    setUser({ ...user, ...userDoc.data() });
   };
 
   const signInWithEmail = async (email: string, password: string) => {
@@ -66,18 +72,28 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const provider = new GoogleAuthProvider();
     const userCredential = await signInWithPopup(auth, provider);
     const user = userCredential.user;
-    const userDoc = await getDoc(doc(db, 'users', user.uid));
+    const userDocRef = doc(db, 'users', user.uid);
+    const userDoc = await getDoc(userDocRef);
     if (!userDoc.exists()) {
-      await setDoc(doc(db, 'users', user.uid), {
+      await setDoc(userDocRef, {
         email: user.email,
         displayName: user.displayName,
         photoURL: user.photoURL,
       });
+       setUser({ ...user, ...{
+        email: user.email,
+        displayName: user.displayName,
+        photoURL: user.photoURL,
+      } });
+    } else {
+       setUser({ ...user, ...userDoc.data() });
     }
   };
 
+
   const signOut = async () => {
     await firebaseSignOut(auth);
+    setUser(null);
   };
 
   if (loading) {

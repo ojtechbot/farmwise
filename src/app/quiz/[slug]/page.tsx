@@ -50,7 +50,7 @@ export default function QuizPage({ params }: { params: { slug:string } }) {
         </p>
       </div>
       
-      <QuizForm questions={lesson.quiz} tutorialSlug={tutorialSlug} />
+      <QuizForm questions={lesson.quiz} tutorialSlug={tutorialSlug} lessonSlug={lesson.slug} />
     </div>
   );
 }

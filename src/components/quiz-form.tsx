@@ -9,19 +9,27 @@ import { Button } from '@/components/ui/button';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { CheckCircle2, XCircle, ArrowRight } from 'lucide-react';
+import { CheckCircle2, XCircle, ArrowRight, Loader2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
+import { useAuth } from '@/context/auth-context';
+import { saveQuizResult } from '@/lib/db';
+import { useToast } from '@/hooks/use-toast';
+
 
 interface QuizFormProps {
   questions: QuizQuestion[];
   tutorialSlug: string;
+  lessonSlug: string;
 }
 
-export function QuizForm({ questions, tutorialSlug }: QuizFormProps) {
+export function QuizForm({ questions, tutorialSlug, lessonSlug }: QuizFormProps) {
   const [submitted, setSubmitted] = useState(false);
   const [score, setScore] = useState(0);
   const [userAnswers, setUserAnswers] = useState<Record<string, string>>({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { user } = useAuth();
+  const { toast } = useToast();
 
   const schemaObject = questions.reduce((acc, question, index) => {
     acc[`question_${index}`] = z.string({
@@ -36,7 +44,8 @@ export function QuizForm({ questions, tutorialSlug }: QuizFormProps) {
     resolver: zodResolver(formSchema),
   });
 
-  function onSubmit(data: z.infer<typeof formSchema>) {
+  async function onSubmit(data: z.infer<typeof formSchema>) {
+    setIsSubmitting(true);
     let currentScore = 0;
     questions.forEach((q, index) => {
       if (data[`question_${index}`] === q.correctAnswer) {
@@ -45,7 +54,25 @@ export function QuizForm({ questions, tutorialSlug }: QuizFormProps) {
     });
     setScore(currentScore);
     setUserAnswers(data);
+    
+    if(user) {
+        try {
+            await saveQuizResult(user.uid, lessonSlug, currentScore, questions.length);
+             toast({
+                title: "Progress Saved!",
+                description: "Your quiz result has been saved successfully.",
+            });
+        } catch(error) {
+             toast({
+                variant: "destructive",
+                title: "Error saving progress",
+                description: "Could not save your quiz result. Please try again.",
+            });
+        }
+    }
+
     setSubmitted(true);
+    setIsSubmitting(false);
   }
 
   const getLabelClass = (questionIndex: number, option: string) => {
@@ -83,7 +110,7 @@ export function QuizForm({ questions, tutorialSlug }: QuizFormProps) {
                           onValueChange={field.onChange}
                           defaultValue={field.value}
                           className="flex flex-col space-y-2"
-                          disabled={submitted}
+                          disabled={submitted || isSubmitting}
                         >
                           {q.options.map((option, optionIndex) => (
                             <FormItem
@@ -107,7 +134,10 @@ export function QuizForm({ questions, tutorialSlug }: QuizFormProps) {
               </CardContent>
             </Card>
           ))}
-          <Button type="submit" size="lg" className="w-full">Submit Answers</Button>
+          <Button type="submit" size="lg" className="w-full" disabled={isSubmitting}>
+             {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+            Submit Answers
+          </Button>
         </form>
       ) : (
         <Card className="text-center">
@@ -155,9 +185,3 @@ export function QuizForm({ questions, tutorialSlug }: QuizFormProps) {
                         Back to Lesson <ArrowRight className="ml-2 h-4 w-4" />
                     </Link>
                 </Button>
-            </CardFooter>
-        </Card>
-      )}
-    </FormProvider>
-  );
-}

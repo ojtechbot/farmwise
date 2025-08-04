@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Input } from '@/components/ui/input';
 import {
   Select,
@@ -15,10 +15,30 @@ import { AiSuggestionCard } from '@/components/ai-suggestion-card';
 import { tutorials } from '@/lib/data';
 import type { Tutorial } from '@/lib/types';
 import { BookOpen, Target, Search } from 'lucide-react';
+import { useAuth } from '@/context/auth-context';
+import { getUserProgress } from '@/lib/db';
 
 export function DashboardClient() {
   const [searchTerm, setSearchTerm] = useState('');
   const [filterCategory, setFilterCategory] = useState('all');
+  const [progress, setProgress] = useState(0);
+  const [completedModules, setCompletedModules] = useState(0);
+  const { user } = useAuth();
+
+  useEffect(() => {
+    const fetchProgress = async () => {
+      if(user) {
+        const userProgress = await getUserProgress(user.uid);
+        if (userProgress && userProgress.quizzes) {
+          const totalLessons = tutorials.reduce((acc, t) => acc + t.lessons.length, 0);
+          const completedCount = new Set(userProgress.quizzes.map((q: any) => q.lessonSlug)).size;
+          setCompletedModules(completedCount);
+          setProgress(Math.round((completedCount / totalLessons) * 100));
+        }
+      }
+    }
+    fetchProgress();
+  }, [user]);
 
   const filteredTutorials = tutorials.filter((tutorial) => {
     const matchesCategory =
@@ -28,11 +48,13 @@ export function DashboardClient() {
       tutorial.description.toLowerCase().includes(searchTerm.toLowerCase());
     return matchesCategory && matchesSearch;
   });
+  
+  const totalModules = tutorials.length;
 
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-3xl font-bold">Welcome Back, Farmer!</h1>
+        <h1 className="text-3xl font-bold">Welcome Back, {user?.displayName?.split(' ')[0] || 'Farmer'}!</h1>
         <p className="text-muted-foreground">
           Continue your learning journey and cultivate new skills.
         </p>
@@ -47,11 +69,11 @@ export function DashboardClient() {
             <Target className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">25%</div>
+            <div className="text-2xl font-bold">{progress}%</div>
             <p className="text-xs text-muted-foreground">
-              You've completed 2 of 8 modules
+              You've completed {completedModules} of {totalModules} modules
             </p>
-            <Progress value={25} className="mt-2" />
+            <Progress value={progress} className="mt-2" />
           </CardContent>
         </Card>
         <Card>
@@ -106,11 +128,4 @@ export function DashboardClient() {
             ))}
           </div>
         ) : (
-          <div className="text-center py-16 text-muted-foreground">
-            <p>No tutorials found matching your criteria.</p>
-          </div>
-        )}
-      </div>
-    </div>
-  );
-}
+          <div className="text-center py-16 text-

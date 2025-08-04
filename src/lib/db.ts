@@ -101,7 +101,7 @@ export const getTutorials = async (): Promise<Tutorial[]> => {
             description: tutorialData.description,
             category: tutorialData.category,
             imageUrl: tutorialData.imageUrl,
-            lessons: lessons as any,
+            lessons: lessons,
         });
     }
     return tutorials;
@@ -130,33 +130,21 @@ export const getTutorialBySlug = async (slug: string): Promise<Tutorial | null> 
 };
 
 export const getLessonBySlug = async (slug: string): Promise<{ lesson: Lesson | null, tutorialSlug: string | null }> => {
-    const tutorials = await getTutorials();
-    for (const tutorial of tutorials) {
-        const lesson = tutorial.lessons.find(l => l.slug === slug);
-        if (lesson) {
+    const q = query(collection(db, "tutorials"));
+    const querySnapshot = await getDocs(q);
+
+    for (const tutorialDoc of querySnapshot.docs) {
+        const lessonsCol = collection(db, 'tutorials', tutorialDoc.id, 'lessons');
+        const lessonsQuery = query(lessonsCol, where("slug", "==", slug));
+        const lessonSnapshot = await getDocs(lessonsQuery);
+
+        if (!lessonSnapshot.empty) {
+            const lessonDoc = lessonSnapshot.docs[0];
+            const lesson = { id: lessonDoc.id, ...lessonDoc.data() } as Lesson;
+            const tutorial = tutorialDoc.data() as Tutorial;
             return { lesson, tutorialSlug: tutorial.slug };
         }
     }
+
     return { lesson: null, tutorialSlug: null };
-}
-
-
-// Helper function to upload initial data to Firestore.
-// You can call this from a script or a secure admin page.
-export const uploadInitialData = async () => {
-    const { tutorials: initialTutorials } = await import('./data');
-
-    for (const tutorial of initialTutorials) {
-        const { lessons, ...tutorialData } = tutorial;
-        // Use slug as the document ID for tutorials for easier lookup
-        const tutorialRef = doc(db, 'tutorials', tutorialData.slug);
-        await setDoc(tutorialRef, tutorialData);
-
-        for (const lesson of lessons) {
-             // Use slug as the document ID for lessons for easier lookup
-            const lessonRef = doc(db, 'tutorials', tutorialData.slug, 'lessons', lesson.slug);
-            await setDoc(lessonRef, lesson);
-        }
-    }
-    console.log('Initial data uploaded successfully!');
 }

@@ -9,7 +9,7 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Wand2, Loader2, Bot } from 'lucide-react';
+import { Wand2, Loader2, Bot, Sparkles } from 'lucide-react';
 import {
   Dialog,
   DialogContent,
@@ -75,29 +75,25 @@ export function AiSuggestionCard() {
   
   return (
     <>
-      <Card className="bg-primary/10 border-primary/20">
-        <CardHeader>
-          <div className="flex items-center gap-4">
-             <div className="bg-primary/20 p-3 rounded-full">
-                <Wand2 className="h-6 w-6 text-primary" />
-             </div>
-            <div>
-                <CardTitle>AI Recommended Lessons</CardTitle>
-                <CardDescription>Get personalized lesson suggestions from our AI assistant.</CardDescription>
-            </div>
-          </div>
+      <Card className="shadow-md hover:shadow-lg transition-shadow bg-gradient-to-br from-primary/20 via-primary/5 to-transparent">
+        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+          <CardTitle className="text-sm font-medium">AI Recommendations</CardTitle>
+          <Wand2 className="h-4 w-4 text-muted-foreground" />
         </CardHeader>
         <CardContent>
+          <p className="text-xs text-muted-foreground mb-4">
+            Get personalized lesson suggestions from our AI assistant.
+          </p>
           <Button onClick={handleGetSuggestion} disabled={isLoading || tutorials.length === 0} className="w-full">
             {isLoading ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                Getting Suggestion...
+                Thinking...
               </>
             ) : (
               <>
-                <Wand2 className="mr-2 h-4 w-4" />
-                Suggest My Next Lesson
+                <Sparkles className="mr-2 h-4 w-4" />
+                Suggest Next Lesson
               </>
             )}
           </Button>
@@ -105,9 +101,12 @@ export function AiSuggestionCard() {
       </Card>
 
       <Dialog open={isResultOpen} onOpenChange={setIsResultOpen}>
-        <DialogContent className="sm:max-w-[425px]">
+        <DialogContent className="sm:max-w-md">
           <DialogHeader>
-            <DialogTitle>Your Personalised Learning Path</DialogTitle>
+            <DialogTitle className="flex items-center gap-2">
+              <Sparkles className="text-primary"/>
+              Your Personalised Learning Path
+            </DialogTitle>
             <DialogDescription>
               Here are the modules our AI assistant recommends for you next.
             </DialogDescription>
@@ -118,13 +117,13 @@ export function AiSuggestionCard() {
                  <Bot className="h-4 w-4" />
                 <AlertTitle>Suggested Modules</AlertTitle>
                 <AlertDescription>
-                  {result.suggestedModules}
+                  <p className="font-semibold">{result.suggestedModules}</p>
                 </AlertDescription>
               </Alert>
-               <Alert variant="default">
+               <Alert variant="default" className="bg-secondary/50">
                  <AlertTitle>Reasoning</AlertTitle>
                 <AlertDescription>
-                 {result.reasoning}
+                 <p>{result.reasoning}</p>
                 </AlertDescription>
               </Alert>
             </div>

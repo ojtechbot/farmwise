@@ -1,6 +1,6 @@
 'use client';
 import { Button } from '@/components/ui/button';
-import { Leaf } from 'lucide-react';
+import { Leaf, CheckCircle } from 'lucide-react';
 import Link from 'next/link';
 import { TutorialCard } from '@/components/tutorial-card';
 import { useEffect, useState } from 'react';
@@ -25,13 +25,13 @@ export default function Home() {
 
 
   return (
-    <div className="flex flex-col min-h-screen">
-      <header className="px-4 lg:px-6 h-14 flex items-center">
+    <div className="flex flex-col min-h-screen bg-secondary/40">
+      <header className="px-4 lg:px-6 h-16 flex items-center bg-background/80 backdrop-blur-sm sticky top-0 z-50">
         <Link href="/" className="flex items-center justify-center" prefetch={false}>
           <Leaf className="h-6 w-6 text-primary" />
           <span className="ml-2 text-xl font-bold">FarmWise</span>
         </Link>
-        <nav className="ml-auto flex gap-4 sm:gap-6">
+        <nav className="ml-auto flex gap-4 sm:gap-6 items-center">
           <Link
             href="/login"
             className="text-sm font-medium hover:underline underline-offset-4"
@@ -40,27 +40,41 @@ export default function Home() {
             Login
           </Link>
           <Button asChild>
-            <Link href="/register">Sign Up</Link>
+            <Link href="/register">Get Started</Link>
           </Button>
         </nav>
       </header>
       <main className="flex-1">
-        <section className="w-full py-12 md:py-24 lg:py-32 xl:py-48">
+        <section className="w-full py-12 md:py-24 lg:py-32 xl:py-40 bg-background">
           <div className="container px-4 md:px-6">
-            <div className="grid gap-6 lg:grid-cols-[1fr_400px] lg:gap-12 xl:grid-cols-[1fr_600px]">
+            <div className="grid gap-6 lg:grid-cols-[1fr_500px] lg:gap-12 xl:grid-cols-[1fr_600px]">
               <div className="flex flex-col justify-center space-y-4">
-                <div className="space-y-2">
-                  <h1 className="text-3xl font-bold tracking-tighter sm:text-5xl xl:text-6xl/none">
+                <div className="space-y-4">
+                  <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl xl:text-6xl/none">
                     Grow Your Knowledge, Cultivate Success
                   </h1>
                   <p className="max-w-[600px] text-muted-foreground md:text-xl">
-                    FarmWise provides practical, easy-to-understand tutorials for farmers, students, and fishers. Start learning today.
+                    FarmWise provides practical, AI-powered tutorials for farmers, students, and enthusiasts. Start your learning journey today.
                   </p>
+                  <ul className="space-y-2 text-muted-foreground">
+                    <li className="flex items-center gap-2">
+                      <CheckCircle className="h-5 w-5 text-primary" />
+                      <span>Expert-led video and text lessons.</span>
+                    </li>
+                     <li className="flex items-center gap-2">
+                      <CheckCircle className="h-5 w-5 text-primary" />
+                      <span>Interactive quizzes to test your knowledge.</span>
+                    </li>
+                     <li className="flex items-center gap-2">
+                      <CheckCircle className="h-5 w-5 text-primary" />
+                      <span>AI Tutor to answer your questions 24/7.</span>
+                    </li>
+                  </ul>
                 </div>
                 <div className="flex flex-col gap-2 min-[400px]:flex-row">
                   <Button size="lg" asChild>
                     <Link href="/dashboard" prefetch={false}>
-                      Start Learning
+                      Start Learning Now
                     </Link>
                   </Button>
                 </div>
@@ -70,19 +84,19 @@ export default function Home() {
                 data-ai-hint="farming agriculture"
                 width="600"
                 height="400"
-                alt="Hero"
+                alt="A beautiful and modern farm"
                 className="mx-auto aspect-[3/2] overflow-hidden rounded-xl object-cover sm:w-full"
               />
             </div>
           </div>
         </section>
         
-        <section id="courses" className="w-full py-12 md:py-24 lg:py-32 bg-secondary">
+        <section id="courses" className="w-full py-12 md:py-24 lg:py-32">
           <div className="container px-4 md:px-6">
             <div className="flex flex-col items-center justify-center space-y-4 text-center">
               <div className="space-y-2">
-                <div className="inline-block rounded-lg bg-muted px-3 py-1 text-sm">Our Courses</div>
-                <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">Explore Our Tutorials</h2>
+                <div className="inline-block rounded-lg bg-muted px-3 py-1 text-sm font-medium">Our Courses</div>
+                <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">Explore Our Learning Modules</h2>
                 <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
                   Our platform is tailored to the needs of modern agriculture and aquaculture. Jump into a lesson and start your journey.
                 </p>
@@ -92,10 +106,9 @@ export default function Home() {
               {loading ? (
                  Array.from({ length: 3 }).map((_, index) => (
                   <div key={index} className="flex flex-col gap-4">
-                    <Skeleton className="h-48 w-full" />
+                    <Skeleton className="h-48 w-full rounded-xl" />
                     <Skeleton className="h-4 w-1/4" />
                     <Skeleton className="h-6 w-3/4" />
-                    <Skeleton className="h-4 w-full" />
                     <Skeleton className="h-10 w-full" />
                   </div>
                 ))
@@ -104,7 +117,7 @@ export default function Home() {
                   <TutorialCard key={tutorial.id} tutorial={tutorial} />
                 ))
               ) : (
-                 <div className="col-span-full text-center text-muted-foreground">
+                 <div className="col-span-full text-center text-muted-foreground bg-card p-8 rounded-lg">
                     <p>No courses available at the moment. Please check back later.</p>
                  </div>
               )}
@@ -112,7 +125,7 @@ export default function Home() {
           </div>
         </section>
       </main>
-      <footer className="flex flex-col gap-2 sm:flex-row py-6 w-full shrink-0 items-center px-4 md:px-6 border-t">
+      <footer className="flex flex-col gap-2 sm:flex-row py-6 w-full shrink-0 items-center px-4 md:px-6 border-t bg-background">
         <p className="text-xs text-muted-foreground">&copy; 2024 FarmWise. All rights reserved.</p>
         <nav className="sm:ml-auto flex gap-4 sm:gap-6">
           <Link href="#" className="text-xs hover:underline underline-offset-4" prefetch={false}>

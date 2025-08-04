@@ -33,7 +33,8 @@ export default function DashboardLayout({
   }, [user, loading, router]);
   
   if (loading || !user) {
-    return null; // Or a loading spinner
+    // AuthProvider will show a full-page loader
+    return null; 
   }
 
   const handleSignOut = async () => {
@@ -97,7 +98,7 @@ export default function DashboardLayout({
       </Sidebar>
       <SidebarInset>
         <Header />
-        <main className="flex-1 overflow-auto p-4 md:p-8">
+        <main className="flex-1 overflow-auto p-4 md:p-8 bg-secondary/40">
           {children}
         </main>
       </SidebarInset>

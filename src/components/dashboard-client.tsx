@@ -9,11 +9,11 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Progress } from '@/components/ui/progress';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { TutorialCard } from '@/components/tutorial-card';
 import { AiSuggestionCard } from '@/components/ai-suggestion-card';
 import type { Tutorial } from '@/lib/types';
-import { BookOpen, Target, Search } from 'lucide-react';
+import { BookOpen, Target, Search, GraduationCap } from 'lucide-react';
 import { useAuth } from '@/context/auth-context';
 import { getUserProgress, getTutorialsRealtime } from '@/lib/db';
 import { Skeleton } from './ui/skeleton';
@@ -28,11 +28,12 @@ export function DashboardClient() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    if (!user) return; // Don't fetch anything if there's no user
     const unsubscribe = getTutorialsRealtime((fetchedTutorials) => {
       setTutorials(fetchedTutorials);
       const totalLessonsCount = fetchedTutorials.reduce((acc, t) => acc + (t.lessons?.length || 0), 0);
 
-      if (user && totalLessonsCount > 0) {
+      if (totalLessonsCount > 0) {
         getUserProgress(user.uid).then(userProgress => {
           if (userProgress && userProgress.quizzes) {
             const completedSlugs = new Set(userProgress.quizzes.map((q: any) => q.lessonSlug));
@@ -65,14 +66,14 @@ export function DashboardClient() {
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-3xl font-bold">Welcome Back, {user?.displayName?.split(' ')[0] || 'Farmer'}!</h1>
+        <h1 className="text-3xl font-bold tracking-tight">Welcome Back, {user?.displayName?.split(' ')[0] || 'Farmer'}!</h1>
         <p className="text-muted-foreground">
           Continue your learning journey and cultivate new skills.
         </p>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        <Card>
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <Card className="shadow-md hover:shadow-lg transition-shadow">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">
               Overall Progress
@@ -82,49 +83,47 @@ export function DashboardClient() {
           <CardContent>
             {loading ? <Skeleton className="h-8 w-1/4 my-1" /> : <div className="text-2xl font-bold">{progress}%</div>}
             
-            {loading ? <Skeleton className="h-4 w-full" /> : 
+            {loading ? <Skeleton className="h-4 w-3/4 mt-1" /> : 
             <p className="text-xs text-muted-foreground">
-              You've completed {completedModules} of {totalLessons} lessons
+              You've completed {completedModules} of {totalLessons || '...'} lessons
             </p>
             }
-            <Progress value={progress} className="mt-2" />
+            <Progress value={progress} className="mt-4 h-2" />
           </CardContent>
         </Card>
-        <Card>
+        <Card className="shadow-md hover:shadow-lg transition-shadow">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">
-              Available Tutorials
+              Tutorials Completed
             </CardTitle>
-            <BookOpen className="h-4 w-4 text-muted-foreground" />
+            <GraduationCap className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-             {loading ? <Skeleton className="h-8 w-1/4 my-1" /> : <div className="text-2xl font-bold">{totalTutorials}</div>}
-             {loading ? <Skeleton className="h-4 w-full" /> :
+             {loading ? <Skeleton className="h-8 w-1/4 my-1" /> : <div className="text-2xl font-bold">{completedModules} / {totalTutorials}</div>}
+             {loading ? <Skeleton className="h-4 w-3/4 mt-1" /> :
             <p className="text-xs text-muted-foreground">
-              modules available across all categories
+              modules completed across all categories
             </p>}
           </CardContent>
         </Card>
-        <div className="lg:col-span-1">
-          <AiSuggestionCard />
-        </div>
+        <AiSuggestionCard />
       </div>
 
       <div>
-        <h2 className="text-2xl font-bold mb-4">Explore Tutorials</h2>
+        <h2 className="text-2xl font-bold tracking-tight mb-4">Explore Tutorials</h2>
         <div className="flex flex-col md:flex-row gap-4 mb-6">
           <div className="relative flex-1">
-            <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             <Input
               type="search"
               placeholder="Search tutorials..."
-              className="pl-8"
+              className="pl-9"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
           <Select onValueChange={setFilterCategory} value={filterCategory}>
-            <SelectTrigger className="w-full md:w-[180px]">
+            <SelectTrigger className="w-full md:w-[200px]">
               <SelectValue placeholder="Filter by category" />
             </SelectTrigger>
             <SelectContent>
@@ -140,23 +139,23 @@ export function DashboardClient() {
            <div className="grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
              {Array.from({ length: 3 }).map((_, index) => (
                 <div key={index} className="flex flex-col gap-4">
-                  <Skeleton className="h-48 w-full" />
+                  <Skeleton className="h-48 w-full rounded-lg" />
                   <Skeleton className="h-4 w-1/4" />
                   <Skeleton className="h-6 w-3/4" />
-                  <Skeleton className="h-4 w-full" />
                   <Skeleton className="h-10 w-full" />
                 </div>
               ))}
            </div>
         ) : filteredTutorials.length > 0 ? (
-          <div className="grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-8 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
             {filteredTutorials.map((tutorial) => (
               <TutorialCard key={tutorial.id} tutorial={tutorial} />
             ))}
           </div>
         ) : (
-          <div className="text-center py-16 text-muted-foreground">
-            <p>No tutorials found. Try adjusting your search or filter.</p>
+          <div className="text-center py-16 text-muted-foreground bg-card rounded-lg">
+            <p className="font-semibold">No tutorials found.</p>
+            <p className="text-sm">Try adjusting your search or filter.</p>
           </div>
         )}
       </div>

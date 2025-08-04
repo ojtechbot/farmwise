@@ -1,4 +1,3 @@
-
 'use client';
 
 import React, { createContext, useContext, useEffect, useState, ReactNode } from 'react';
@@ -12,8 +11,8 @@ import {
   User,
 } from 'firebase/auth';
 import { doc, setDoc, getDoc } from 'firebase/firestore';
-import { auth, db } from '../lib/firebase';
-import { Loader2 } from 'lucide-react';
+import { getFirebase } from '../lib/firebase';
+import { Loader2, Leaf } from 'lucide-react';
 
 interface AuthContextType {
   user: User | null;
@@ -31,7 +30,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!auth) {
+    const { auth, db } = getFirebase();
+    if (!auth || !db) {
       setLoading(false);
       return;
     }
@@ -61,24 +61,28 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   const signUpWithEmail = async (email: string, password: string, userData: { [key: string]: any }) => {
+    const { auth, db } = getFirebase();
     if (!auth || !db) throw new Error("Firebase not initialized");
     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
     const user = userCredential.user;
-    await setDoc(doc(db, 'users', user.uid), {
+    const userDocRef = doc(db, 'users', user.uid);
+    await setDoc(userDocRef, {
       email: user.email,
       displayName: `${userData.firstName} ${userData.lastName}`,
       ...userData,
     });
-    const userDoc = await getDoc(doc(db, 'users', user.uid));
+    const userDoc = await getDoc(userDocRef);
     setUser({ ...user, ...userDoc.data() });
   };
 
   const signInWithEmail = async (email: string, password: string) => {
+    const { auth } = getFirebase();
     if (!auth) throw new Error("Firebase not initialized");
     await signInWithEmailAndPassword(auth, email, password);
   };
 
   const signInWithGoogle = async () => {
+    const { auth, db } = getFirebase();
     if (!auth || !db) throw new Error("Firebase not initialized");
     const provider = new GoogleAuthProvider();
     const userCredential = await signInWithPopup(auth, provider);
@@ -95,6 +99,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const signOut = async () => {
+    const { auth } = getFirebase();
     if (!auth) throw new Error("Firebase not initialized");
     await firebaseSignOut(auth);
     setUser(null);
@@ -102,8 +107,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-background">
-        <Loader2 className="h-10 w-10 animate-spin text-primary" />
+      <div className="flex flex-col items-center justify-center min-h-screen bg-background">
+        <div className="relative flex items-center justify-center h-24 w-24">
+          <Leaf className="h-12 w-12 text-primary animate-pulse" />
+          <Loader2 className="absolute h-24 w-24 text-primary/20 animate-spin" />
+        </div>
+        <p className="mt-4 text-muted-foreground">Loading FarmWise...</p>
       </div>
     );
   }

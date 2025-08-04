@@ -16,8 +16,12 @@ import { useAuth } from "@/context/auth-context"
 import { useRouter } from "next/navigation";
 
 export function UserNav() {
-  const { user, signOut } = useAuth();
+  const { user, signOut, loading } = useAuth();
   const router = useRouter();
+
+  if (loading) {
+    return null;
+  }
 
   if (!user) {
     return (

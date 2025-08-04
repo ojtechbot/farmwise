@@ -1,11 +1,10 @@
-
 'use client';
 import { Button } from '@/components/ui/button';
 import { Leaf } from 'lucide-react';
 import Link from 'next/link';
 import { TutorialCard } from '@/components/tutorial-card';
 import { useEffect, useState } from 'react';
-import { getTutorials } from '@/lib/db';
+import { getTutorialsRealtime } from '@/lib/db';
 import type { Tutorial } from '@/lib/types';
 import { Skeleton } from '@/components/ui/skeleton';
 import Image from 'next/image';
@@ -15,19 +14,13 @@ export default function Home() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchTutorials = async () => {
-      setLoading(true);
-      try {
-        const fetchedTutorials = await getTutorials();
-        setTutorials(fetchedTutorials);
-      } catch (error) {
-        console.error("Failed to fetch tutorials", error);
-      } finally {
-        setLoading(false);
-      }
-    };
+    const unsubscribe = getTutorialsRealtime((fetchedTutorials) => {
+      setTutorials(fetchedTutorials);
+      setLoading(false);
+    });
 
-    fetchTutorials();
+    // Cleanup subscription on component unmount
+    return () => unsubscribe();
   }, []);
 
 

@@ -1,4 +1,3 @@
-
 'use client';
 import { useState, useEffect } from 'react';
 import { Input } from '@/components/ui/input';
@@ -16,7 +15,7 @@ import { AiSuggestionCard } from '@/components/ai-suggestion-card';
 import type { Tutorial } from '@/lib/types';
 import { BookOpen, Target, Search } from 'lucide-react';
 import { useAuth } from '@/context/auth-context';
-import { getUserProgress, getTutorials } from '@/lib/db';
+import { getUserProgress, getTutorialsRealtime } from '@/lib/db';
 import { Skeleton } from './ui/skeleton';
 
 export function DashboardClient() {
@@ -29,40 +28,25 @@ export function DashboardClient() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchTutorialsAndProgress = async () => {
-      setLoading(true);
-      try {
-        const fetchedTutorials = await getTutorials();
-        setTutorials(fetchedTutorials);
-        const totalLessonsCount = fetchedTutorials.reduce((acc, t) => acc + (t.lessons?.length || 0), 0);
+    const unsubscribe = getTutorialsRealtime((fetchedTutorials) => {
+      setTutorials(fetchedTutorials);
+      const totalLessonsCount = fetchedTutorials.reduce((acc, t) => acc + (t.lessons?.length || 0), 0);
 
-        if(user && totalLessonsCount > 0) {
-          const userProgress = await getUserProgress(user.uid);
+      if (user && totalLessonsCount > 0) {
+        getUserProgress(user.uid).then(userProgress => {
           if (userProgress && userProgress.quizzes) {
             const completedSlugs = new Set(userProgress.quizzes.map((q: any) => q.lessonSlug));
             const completedCount = completedSlugs.size;
             setCompletedModules(completedCount);
             setProgress(Math.round((completedCount / totalLessonsCount) * 100));
           }
-        }
-      } catch (error) {
-        console.error("Failed to fetch data", error);
-      } finally {
-        setLoading(false);
-      }
-    }
-    if (user) {
-        fetchTutorialsAndProgress();
-    } else {
-        // If no user, just fetch tutorials
-        getTutorials().then(fetchedTutorials => {
-            setTutorials(fetchedTutorials);
-            setLoading(false);
-        }).catch(err => {
-            console.error("Failed to fetch tutorials", err);
-            setLoading(false);
         });
-    }
+      }
+      setLoading(false);
+    });
+
+    // Cleanup subscription on component unmount
+    return () => unsubscribe();
   }, [user]);
   
   const totalLessons = tutorials.reduce((acc, t) => acc + (t.lessons?.length || 0), 0);

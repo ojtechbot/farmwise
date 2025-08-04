@@ -1,3 +1,4 @@
+
 import { doc, setDoc, getDoc, updateDoc, arrayUnion, collection, query, where, getDocs } from 'firebase/firestore';
 import { db } from './firebase';
 import type { ChatMessage } from '@/ai/flows/tutor-flow';
@@ -58,7 +59,7 @@ export const getLessonChatHistory = async (userId: string, lessonSlug: string): 
 
 export const saveLessonChatMessage = async (userId: string, lessonSlug: string, message: ChatMessage) => {
     const chatHistoryRef = doc(db, 'progress', userId, 'chatHistory', lessonSlug);
-    const chatHistoryDoc = await getDoc(chatHistoryRef);
+    const chatHistoryDoc = await getDoc(chatHistoryDoc);
 
     if (chatHistoryDoc.exists()) {
         await updateDoc(chatHistoryRef, {
@@ -75,42 +76,60 @@ export const getTutorials = async (): Promise<Tutorial[]> => {
     const tutorialsCol = collection(db, 'tutorials');
     const tutorialSnapshot = await getDocs(tutorialsCol);
     const tutorials: Tutorial[] = [];
+    
     for(const tutorialDoc of tutorialSnapshot.docs) {
         const tutorialData = tutorialDoc.data() as Omit<Tutorial, 'id' | 'lessons'>;
+        
         const lessonsCol = collection(db, 'tutorials', tutorialDoc.id, 'lessons');
         const lessonSnapshot = await getDocs(lessonsCol);
-        const lessons = lessonSnapshot.docs.map(lessonDoc => ({...lessonDoc.data(), id: lessonDoc.id}));
+        const lessons = lessonSnapshot.docs.map(lessonDoc => {
+            const data = lessonDoc.data();
+            return {
+                id: lessonDoc.id,
+                slug: data.slug,
+                title: data.title,
+                content: data.content,
+                videoUrl: data.videoUrl,
+                quiz: data.quiz || [],
+            };
+        });
 
         tutorials.push({
-            ...tutorialData,
             id: tutorialDoc.id,
+            slug: tutorialData.slug,
+            title: tutorialData.title,
+            description: tutorialData.description,
+            category: tutorialData.category,
+            imageUrl: tutorialData.imageUrl,
             lessons: lessons as any,
         });
     }
     return tutorials;
 };
 
-export const getTutorialBySlug = async (slug: string): Promise<Tutorial | undefined> => {
-  const tutorialRef = doc(db, 'tutorials', slug);
-  const tutorialDoc = await getDoc(tutorialRef);
+export const getTutorialBySlug = async (slug: string): Promise<Tutorial | null> => {
+    const q = query(collection(db, "tutorials"), where("slug", "==", slug));
+    const querySnapshot = await getDocs(q);
 
-  if (!tutorialDoc.exists()) {
-    return undefined;
-  }
+    if (querySnapshot.empty) {
+        return null;
+    }
 
-  const tutorialData = tutorialDoc.data() as Omit<Tutorial, 'id' | 'lessons'>;
-  const lessonsCol = collection(db, 'tutorials', tutorialDoc.id, 'lessons');
-  const lessonSnapshot = await getDocs(lessonsCol);
-  const lessons = lessonSnapshot.docs.map(lessonDoc => ({ ...lessonDoc.data(), id: lessonDoc.id })) as Lesson[];
+    const tutorialDoc = querySnapshot.docs[0];
+    const tutorialData = tutorialDoc.data() as Omit<Tutorial, 'id' | 'lessons'>;
 
-  return {
-    ...tutorialData,
-    id: tutorialDoc.id,
-    lessons: lessons,
-  };
+    const lessonsCol = collection(db, 'tutorials', tutorialDoc.id, 'lessons');
+    const lessonSnapshot = await getDocs(lessonsCol);
+    const lessons = lessonSnapshot.docs.map(lessonDoc => ({...lessonDoc.data(), id: lessonDoc.id}));
+
+    return {
+        ...tutorialData,
+        id: tutorialDoc.id,
+        lessons: lessons as any,
+    };
 };
 
-export const getLessonBySlug = async (slug: string): Promise<{ lesson: Lesson | undefined, tutorialSlug: string | undefined }> => {
+export const getLessonBySlug = async (slug: string): Promise<{ lesson: Lesson | null, tutorialSlug: string | null }> => {
     const tutorials = await getTutorials();
     for (const tutorial of tutorials) {
         const lesson = tutorial.lessons.find(l => l.slug === slug);
@@ -118,7 +137,7 @@ export const getLessonBySlug = async (slug: string): Promise<{ lesson: Lesson | 
             return { lesson, tutorialSlug: tutorial.slug };
         }
     }
-    return { lesson: undefined, tutorialSlug: undefined };
+    return { lesson: null, tutorialSlug: null };
 }
 
 
@@ -129,10 +148,12 @@ export const uploadInitialData = async () => {
 
     for (const tutorial of initialTutorials) {
         const { lessons, ...tutorialData } = tutorial;
+        // Use slug as the document ID for tutorials for easier lookup
         const tutorialRef = doc(db, 'tutorials', tutorialData.slug);
         await setDoc(tutorialRef, tutorialData);
 
         for (const lesson of lessons) {
+             // Use slug as the document ID for lessons for easier lookup
             const lessonRef = doc(db, 'tutorials', tutorialData.slug, 'lessons', lesson.slug);
             await setDoc(lessonRef, lesson);
         }

@@ -1,13 +1,13 @@
 'use client';
 import { Button } from '@/components/ui/button';
-import { Leaf, Droplets, BookOpen } from 'lucide-react';
+import { Leaf } from 'lucide-react';
 import Link from 'next/link';
-import Image from 'next/image';
 import { TutorialCard } from '@/components/tutorial-card';
 import { useEffect, useState } from 'react';
 import { getTutorials } from '@/lib/db';
 import type { Tutorial } from '@/lib/types';
 import { Skeleton } from '@/components/ui/skeleton';
+import Image from 'next/image';
 
 export default function Home() {
   const [tutorials, setTutorials] = useState<Tutorial[]>([]);
@@ -113,42 +113,6 @@ export default function Home() {
                     <p>No courses available at the moment. Please check back later.</p>
                  </div>
               )}
-            </div>
-          </div>
-        </section>
-        
-        <section className="w-full py-12 md:py-24">
-          <div className="container px-4 md:px-6">
-            <div className="flex flex-col items-center justify-center space-y-4 text-center">
-              <div className="space-y-2">
-                <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">What We Offer</h2>
-                <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                  Our platform is tailored to the needs of modern agriculture and aquaculture.
-                </p>
-              </div>
-            </div>
-            <div className="mx-auto grid max-w-5xl items-start gap-8 sm:grid-cols-2 md:gap-12 lg:grid-cols-3 lg:gap-16 mt-12">
-              <div className="grid gap-1 text-center">
-                <Leaf className="h-8 w-8 mx-auto text-primary" />
-                <h3 className="text-lg font-bold">Crop Production</h3>
-                <p className="text-sm text-muted-foreground">
-                  Learn about soil preparation, pest control, and harvesting methods.
-                </p>
-              </div>
-              <div className="grid gap-1 text-center">
-                <Droplets className="h-8 w-8 mx-auto text-primary" />
-                <h3 className="text-lg font-bold">Fish Farming</h3>
-                <p className="text-sm text-muted-foreground">
-                  Master the essentials of pond setup, fish care, and sustainable aquaculture.
-                </p>
-              </div>
-              <div className="grid gap-1 text-center">
-                <BookOpen className="h-8 w-8 mx-auto text-primary" />
-                <h3 className="text-lg font-bold">AI-Powered Learning</h3>
-                <p className="text-sm text-muted-foreground">
-                   Our AI Tutor helps you understand complex topics and guides you through your learning journey.
-                </p>
-              </div>
             </div>
           </div>
         </section>

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
   Card,
   CardContent,
@@ -20,15 +20,30 @@ import {
 } from '@/components/ui/dialog';
 import { suggestLearningModules } from '@/ai/flows/suggest-learning-modules';
 import type { SuggestLearningModulesOutput } from '@/ai/flows/suggest-learning-modules';
-import { tutorials } from '@/lib/data';
 import { useToast } from '@/hooks/use-toast';
 import { Alert, AlertDescription, AlertTitle } from './ui/alert';
+import { getTutorials } from '@/lib/db';
+import type { Tutorial } from '@/lib/types';
+
 
 export function AiSuggestionCard() {
   const [isLoading, setIsLoading] = useState(false);
   const [result, setResult] = useState<SuggestLearningModulesOutput | null>(null);
   const [isResultOpen, setIsResultOpen] = useState(false);
+  const [tutorials, setTutorials] = useState<Tutorial[]>([]);
   const { toast } = useToast();
+
+  useEffect(() => {
+    const fetchTutorials = async () => {
+      try {
+        const fetchedTutorials = await getTutorials();
+        setTutorials(fetchedTutorials);
+      } catch (error) {
+        console.error("Failed to fetch tutorials for AI suggestion", error);
+      }
+    };
+    fetchTutorials();
+  }, []);
 
   const handleGetSuggestion = async () => {
     setIsLoading(true);
@@ -73,7 +88,7 @@ export function AiSuggestionCard() {
           </div>
         </CardHeader>
         <CardContent>
-          <Button onClick={handleGetSuggestion} disabled={isLoading} className="w-full">
+          <Button onClick={handleGetSuggestion} disabled={isLoading || tutorials.length === 0} className="w-full">
             {isLoading ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />

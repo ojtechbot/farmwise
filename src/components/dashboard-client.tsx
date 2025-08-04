@@ -25,20 +25,23 @@ export function DashboardClient() {
   const [completedModules, setCompletedModules] = useState(0);
   const { user } = useAuth();
 
+  const totalLessons = tutorials.reduce((acc, t) => acc + t.lessons.length, 0);
+
   useEffect(() => {
     const fetchProgress = async () => {
-      if(user) {
+      if(user && totalLessons > 0) {
         const userProgress = await getUserProgress(user.uid);
         if (userProgress && userProgress.quizzes) {
-          const totalLessons = tutorials.reduce((acc, t) => acc + t.lessons.length, 0);
-          const completedCount = new Set(userProgress.quizzes.map((q: any) => q.lessonSlug)).size;
+          // Use a Set to count unique completed lessons
+          const completedSlugs = new Set(userProgress.quizzes.map((q: any) => q.lessonSlug));
+          const completedCount = completedSlugs.size;
           setCompletedModules(completedCount);
           setProgress(Math.round((completedCount / totalLessons) * 100));
         }
       }
     }
     fetchProgress();
-  }, [user]);
+  }, [user, totalLessons]);
 
   const filteredTutorials = tutorials.filter((tutorial) => {
     const matchesCategory =
@@ -49,7 +52,7 @@ export function DashboardClient() {
     return matchesCategory && matchesSearch;
   });
   
-  const totalModules = tutorials.length;
+  const totalTutorials = tutorials.length;
 
   return (
     <div className="space-y-8">
@@ -71,7 +74,7 @@ export function DashboardClient() {
           <CardContent>
             <div className="text-2xl font-bold">{progress}%</div>
             <p className="text-xs text-muted-foreground">
-              You've completed {completedModules} of {totalModules} modules
+              You've completed {completedModules} of {totalLessons} lessons
             </p>
             <Progress value={progress} className="mt-2" />
           </CardContent>
@@ -84,7 +87,7 @@ export function DashboardClient() {
             <BookOpen className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{tutorials.length}</div>
+            <div className="text-2xl font-bold">{totalTutorials}</div>
             <p className="text-xs text-muted-foreground">
               modules available across all categories
             </p>
@@ -128,4 +131,11 @@ export function DashboardClient() {
             ))}
           </div>
         ) : (
-          <div className="text-center py-16 text-
+          <div className="text-center py-16 text-muted-foreground">
+            <p>No tutorials found. Try adjusting your search or filter.</p>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}

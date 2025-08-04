@@ -4,6 +4,15 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { Button } from '@/components/ui/button';
 import { ArrowRight, ChevronLeft, BookOpen, Video, ListChecks } from 'lucide-react';
 import Link from 'next/link';
+import { AiTutor } from '@/components/ai-tutor';
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion"
+import { Sparkles } from 'lucide-react';
+
 
 export async function generateStaticParams() {
   const params: { slug: string }[] = [];
@@ -92,6 +101,22 @@ export default function LearnPage({ params }: { params: { slug: string } }) {
           </div>
         </CardContent>
       </Card>
+
+      <div className="mb-8">
+        <Accordion type="single" collapsible>
+          <AccordionItem value="item-1">
+            <AccordionTrigger>
+              <div className="flex items-center gap-2 text-lg">
+                <Sparkles className="h-5 w-5 text-primary" />
+                Need help? Talk to the AI Tutor
+              </div>
+            </AccordionTrigger>
+            <AccordionContent>
+              <AiTutor lesson={lesson} />
+            </AccordionContent>
+          </AccordionItem>
+        </Accordion>
+      </div>
       
       <Card className="bg-primary/10 border-primary/20">
         <CardHeader>

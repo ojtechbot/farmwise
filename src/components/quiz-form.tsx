@@ -47,13 +47,14 @@ export function QuizForm({ questions, tutorialSlug, lessonSlug }: QuizFormProps)
   async function onSubmit(data: z.infer<typeof formSchema>) {
     setIsSubmitting(true);
     let currentScore = 0;
+    const answeredQuestions = { ...data };
     questions.forEach((q, index) => {
       if (data[`question_${index}`] === q.correctAnswer) {
         currentScore++;
       }
     });
     setScore(currentScore);
-    setUserAnswers(data);
+    setUserAnswers(answeredQuestions);
     
     if(user) {
         try {
@@ -97,7 +98,7 @@ export function QuizForm({ questions, tutorialSlug, lessonSlug }: QuizFormProps)
           {questions.map((q, index) => (
             <Card key={index}>
               <CardHeader>
-                <CardTitle>{q.question}</CardTitle>
+                <CardTitle>{index + 1}. {q.question}</CardTitle>
               </CardHeader>
               <CardContent>
                 <FormField
@@ -118,9 +119,9 @@ export function QuizForm({ questions, tutorialSlug, lessonSlug }: QuizFormProps)
                               className={cn("flex items-center space-x-3 space-y-0 p-4 rounded-lg border transition-colors", getLabelClass(index, option))}
                             >
                               <FormControl>
-                                <RadioGroupItem value={option} />
+                                <RadioGroupItem value={option} id={`${index}-${optionIndex}`} />
                               </FormControl>
-                              <FormLabel className="font-normal cursor-pointer w-full">
+                              <FormLabel htmlFor={`${index}-${optionIndex}`} className="font-normal cursor-pointer w-full">
                                 {option}
                               </FormLabel>
                             </FormItem>
@@ -152,7 +153,7 @@ export function QuizForm({ questions, tutorialSlug, lessonSlug }: QuizFormProps)
                  <div className="space-y-4">
                     {questions.map((q, index) => (
                         <div key={index} className="text-left p-4 rounded-lg border bg-secondary/50">
-                            <p className="font-semibold">{q.question}</p>
+                            <p className="font-semibold">{index + 1}. {q.question}</p>
                             <div className="mt-2 flex items-center">
                                 {userAnswers[`question_${index}`] === q.correctAnswer ? 
                                     <CheckCircle2 className="h-5 w-5 text-green-500 mr-2" /> :
@@ -185,3 +186,9 @@ export function QuizForm({ questions, tutorialSlug, lessonSlug }: QuizFormProps)
                         Back to Lesson <ArrowRight className="ml-2 h-4 w-4" />
                     </Link>
                 </Button>
+            </CardFooter>
+        </Card>
+      )}
+    </FormProvider>
+  );
+}

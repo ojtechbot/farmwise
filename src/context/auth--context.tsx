@@ -1,3 +1,4 @@
+
 'use client';
 
 import React, { createContext, useContext, useEffect, useState, ReactNode } from 'react';
@@ -33,12 +34,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     if (!auth || !db) {
-      // Firebase might not be initialized yet, especially on first load.
-      // The effect will re-run once it is.
       const checkFirebase = setInterval(() => {
         const { auth: updatedAuth } = getFirebase();
         if (updatedAuth) {
-          setLoading(false); // Assume not logged in until auth state changes
+          setLoading(false); 
           clearInterval(checkFirebase);
         }
       }, 100);
@@ -51,7 +50,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         const userDoc = await getDoc(userDocRef);
         if (userDoc.exists()) {
           const userData = userDoc.data();
-          // Merge the user object with the data from Firestore
           const enrichedUser = {
             ...user,
             ...userData,
@@ -60,8 +58,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           };
           setUser(enrichedUser as User);
         } else {
-           // This case is for users who sign in with Google for the first time
-           // or if a user document was somehow deleted.
            const displayName = user.displayName || 'New User';
            const photoURL = user.photoURL || '';
            await setDoc(userDocRef, {
@@ -87,10 +83,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const user = userCredential.user;
     const displayName = `${userData.firstName} ${userData.lastName}`;
     
-    // Update Firebase Auth profile
     await updateProfile(user, { displayName });
 
-    // Create user document in Firestore
     const userDocRef = doc(db, 'users', user.uid);
     await setDoc(userDocRef, {
       uid: user.uid,
@@ -100,7 +94,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       lastName: userData.lastName,
     });
 
-    // Fetch the newly created document to ensure the local user state is in sync
     const userDoc = await getDoc(userDocRef);
     setUser({ ...user, ...userDoc.data() } as User);
   };
@@ -155,4 +148,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (context === undefined) {
-    throw
+    throw new Error('useAuth must be used within an AuthProvider');
+  }
+  return context;
+};

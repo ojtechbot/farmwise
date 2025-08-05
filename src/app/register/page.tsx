@@ -96,7 +96,8 @@ export default function RegisterPage() {
                 <Label htmlFor="password">Password</Label>
                 <Input 
                   id="password" 
-                  type="password" 
+                  type="password"
+                  placeholder="********" 
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}

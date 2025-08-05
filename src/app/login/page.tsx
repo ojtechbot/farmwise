@@ -15,6 +15,7 @@ import { useAuth } from "@/context/auth-context"
 import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { useToast } from "@/hooks/use-toast"
+import { Checkbox } from "@/components/ui/checkbox";
 
 export default function LoginPage() {
   const { signIn } = useAuth();
@@ -81,9 +82,19 @@ export default function LoginPage() {
                   id="password" 
                   type="password" 
                   required
+                  placeholder="********"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                 />
+              </div>
+               <div className="flex items-center space-x-2">
+                <Checkbox id="remember-me" />
+                <Label
+                  htmlFor="remember-me"
+                  className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                >
+                  Remember me
+                </Label>
               </div>
               <Button type="submit" className="w-full" disabled={loading}>
                 {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}

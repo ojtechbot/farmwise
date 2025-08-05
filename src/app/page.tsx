@@ -4,7 +4,7 @@ import { Leaf, CheckCircle } from 'lucide-react';
 import Link from 'next/link';
 import { TutorialCard } from '@/components/tutorial-card';
 import { useEffect, useState } from 'react';
-import { getTutorialsRealtime } from '@/lib/db';
+import { getTutorials } from '@/lib/actions';
 import type { Tutorial } from '@/lib/types';
 import { Skeleton } from '@/components/ui/skeleton';
 import Image from 'next/image';
@@ -14,13 +14,17 @@ export default function Home() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const unsubscribe = getTutorialsRealtime((fetchedTutorials) => {
-      setTutorials(fetchedTutorials);
-      setLoading(false);
-    });
-
-    // Cleanup subscription on component unmount
-    return () => unsubscribe();
+    const fetchTutorials = async () => {
+      try {
+        const fetchedTutorials = await getTutorials();
+        setTutorials(fetchedTutorials);
+      } catch (error) {
+        console.error("Failed to fetch tutorials", error);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchTutorials();
   }, []);
 
 
@@ -54,7 +58,7 @@ export default function Home() {
                     Grow Your Knowledge, Cultivate Success
                   </h1>
                   <p className="max-w-[600px] text-muted-foreground md:text-xl">
-                    FarmWise provides practical, AI-powered tutorials for farmers, students, and enthusiasts. Start your learning journey today.
+                    FarmWise provides practical, hands-on tutorials for farmers, students, and enthusiasts. Start your learning journey today.
                   </p>
                   <ul className="space-y-2 text-muted-foreground">
                     <li className="flex items-center gap-2">
@@ -67,7 +71,7 @@ export default function Home() {
                     </li>
                      <li className="flex items-center gap-2">
                       <CheckCircle className="h-5 w-5 text-primary" />
-                      <span>AI Tutor to answer your questions 24/7.</span>
+                      <span>Learn at your own pace, anytime.</span>
                     </li>
                   </ul>
                 </div>

@@ -33,12 +33,12 @@ export default function DashboardLayout({
   }, [user, loading, router]);
   
   if (loading || !user) {
-    // AuthProvider will show a full-page loader
+    // AuthProvider shows a full-page loader, so this can be null.
     return null; 
   }
 
-  const handleSignOut = async () => {
-    await signOut();
+  const handleSignOut = () => {
+    signOut();
     router.push('/login');
   };
 

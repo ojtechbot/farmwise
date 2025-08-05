@@ -2,13 +2,12 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { getTutorialBySlug } from '@/lib/db';
+import { getTutorialBySlug } from '@/lib/actions';
 import { notFound, useParams } from 'next/navigation';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { ArrowRight, ChevronLeft, BookOpen, Video, ListChecks } from 'lucide-react';
 import Link from 'next/link';
-import { AiTutor } from '@/components/ai-tutor';
 import {
   Accordion,
   AccordionContent,
@@ -143,22 +142,6 @@ export default function LearnPage() {
           </div>
         </CardContent>
       </Card>
-
-      <div className="mb-8">
-        <Accordion type="single" collapsible>
-          <AccordionItem value="item-1">
-            <AccordionTrigger>
-              <div className="flex items-center gap-2 text-lg">
-                <Sparkles className="h-5 w-5 text-primary" />
-                Need help? Talk to the AI Tutor
-              </div>
-            </AccordionTrigger>
-            <AccordionContent>
-              <AiTutor lesson={lesson} />
-            </AccordionContent>
-          </AccordionItem>
-        </Accordion>
-      </div>
       
       <Card className="bg-primary/10 border-primary/20">
         <CardHeader>

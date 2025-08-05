@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { useForm, FormProvider, Controller } from 'react-hook-form';
+import { useForm, FormProvider } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import type { QuizQuestion } from '@/lib/types';
@@ -13,7 +13,7 @@ import { CheckCircle2, XCircle, ArrowRight, Loader2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
 import { useAuth } from '@/context/auth-context';
-import { saveQuizResult } from '@/lib/db';
+import { saveQuizResult } from '@/lib/actions';
 import { useToast } from '@/hooks/use-toast';
 
 
@@ -58,7 +58,7 @@ export function QuizForm({ questions, tutorialSlug, lessonSlug }: QuizFormProps)
     
     if(user) {
         try {
-            await saveQuizResult(user.uid, lessonSlug, currentScore, questions.length);
+            await saveQuizResult(user.id, lessonSlug, currentScore, questions.length);
              toast({
                 title: "Progress Saved!",
                 description: "Your quiz result has been saved successfully.",

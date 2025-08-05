@@ -18,7 +18,7 @@ import { useToast } from "@/hooks/use-toast"
 
 
 export default function RegisterPage() {
-  const { signUpWithEmail, signInWithGoogle } = useAuth();
+  const { signUp } = useAuth();
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
@@ -30,34 +30,19 @@ export default function RegisterPage() {
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    try {
-      await signUpWithEmail(email, password, { firstName, lastName });
+    const result = await signUp({ firstName, lastName, email, password });
+    if (result.success) {
       router.push('/dashboard');
-    } catch (error: any) {
+    } else {
       toast({
         variant: "destructive",
         title: "Registration Failed",
-        description: error.message,
+        description: result.message,
       });
       setLoading(false);
     }
   };
   
-  const handleGoogleLogin = async () => {
-    setLoading(true);
-    try {
-      await signInWithGoogle();
-      router.push('/dashboard');
-    } catch (error: any) {
-      toast({
-        variant: "destructive",
-        title: "Login Failed",
-        description: error.message,
-      });
-      setLoading(false);
-    }
-  }
-
   return (
     <div className="flex items-center justify-center min-h-screen bg-secondary">
       <Card className="mx-auto max-w-sm">
@@ -120,10 +105,6 @@ export default function RegisterPage() {
               <Button type="submit" className="w-full" disabled={loading}>
                  {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                 Create an account
-              </Button>
-              <Button variant="outline" className="w-full" onClick={handleGoogleLogin} disabled={loading} type="button">
-                {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                Sign up with Google
               </Button>
             </div>
           </form>

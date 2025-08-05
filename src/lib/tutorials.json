@@ -1,0 +1,150 @@
+
+[
+  {
+    "id": "sustainable-farming-basics",
+    "slug": "sustainable-farming-basics",
+    "title": "Sustainable Farming Basics",
+    "description": "Learn the fundamentals of sustainable agriculture, from soil health to water conservation.",
+    "category": "Crop Production",
+    "imageUrl": "https://placehold.co/600x400.png",
+    "lessons": [
+      {
+        "id": "intro-to-soil-health",
+        "slug": "intro-to-soil-health",
+        "title": "Introduction to Soil Health",
+        "content": "Healthy soil is the foundation of a thriving farm. This lesson covers the basics of soil composition, the importance of organic matter, and how to test your soil's health. We will explore concepts like pH levels, nutrients (macronutrients and micronutrients), and the role of microorganisms in creating a fertile environment for your crops. Understanding these fundamentals will allow you to make informed decisions about soil management.",
+        "videoUrl": "https://www.youtube.com/embed/videoseries?list=PL4_hYwCyh4h_Q3E_1g4iIykO0iB4_4w5c",
+        "quiz": [
+          {
+            "question": "What is the ideal pH range for most crops?",
+            "options": [
+              "4.5-5.5",
+              "6.0-7.0",
+              "7.5-8.5",
+              "5.0-8.0"
+            ],
+            "correctAnswer": "6.0-7.0"
+          },
+          {
+            "question": "Which of these is a macronutrient?",
+            "options": [
+              "Iron",
+              "Manganese",
+              "Nitrogen",
+              "Zinc"
+            ],
+            "correctAnswer": "Nitrogen"
+          },
+          {
+            "question": "What is the main benefit of organic matter in soil?",
+            "options": [
+              "It increases soil density.",
+              "It improves water retention and nutrient supply.",
+              "It sterilizes the soil, killing all bacteria.",
+              "It raises the soil's pH level dramatically."
+            ],
+            "correctAnswer": "It improves water retention and nutrient supply."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "aquaculture-essentials",
+    "slug": "aquaculture-essentials",
+    "title": "Aquaculture Essentials",
+    "description": "Dive into the world of fish farming with this introductory course on aquaculture.",
+    "category": "Fish Farming",
+    "imageUrl": "https://placehold.co/600x400.png",
+    "lessons": [
+      {
+        "id": "water-quality-management",
+        "slug": "water-quality-management",
+        "title": "Water Quality Management in Aquaculture",
+        "content": "Maintaining optimal water quality is crucial for the health and growth of aquatic life. This lesson introduces key water quality parameters such as dissolved oxygen, ammonia, nitrite, nitrate, and pH. You will learn how to monitor these parameters using various testing kits and equipment, and understand the acceptable ranges for different fish species. We'll also discuss common methods for correcting water quality issues, like aeration and water changes, to ensure a stable and healthy environment for your fish farm.",
+        "videoUrl": "https://www.youtube.com/embed/videoseries?list=PL4_hYwCyh4h_Q3E_1g4iIykO0iB4_4w5c",
+        "quiz": [
+          {
+            "question": "Which parameter is often called the 'silent killer' in aquaculture?",
+            "options": [
+              "Low pH",
+              "High Temperature",
+              "High Ammonia",
+              "Low Dissolved Oxygen"
+            ],
+            "correctAnswer": "High Ammonia"
+          },
+          {
+            "question": "What is the primary purpose of aeration in a fish pond?",
+            "options": [
+              "To cool the water",
+              "To increase dissolved oxygen levels",
+              "To reduce water cloudiness",
+              "To add nutrients to the water"
+            ],
+            "correctAnswer": "To increase dissolved oxygen levels"
+          },
+          {
+            "question": "The biological filter in an aquaculture system primarily converts...",
+            "options": [
+              "Ammonia to nitrate",
+              "Nitrate to ammonia",
+              "Oxygen to CO2",
+              "Fish waste to fish food"
+            ],
+            "correctAnswer": "Ammonia to nitrate"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "integrated-pest-management",
+    "slug": "integrated-pest-management",
+    "title": "Integrated Pest Management (IPM)",
+    "description": "Adopt a holistic approach to pest control that minimizes risks to people and the environment.",
+    "category": "Pest Control",
+    "imageUrl": "https://placehold.co/600x400.png",
+    "lessons": [
+      {
+        "id": "ipm-principles",
+        "slug": "ipm-principles",
+        "title": "Principles of Integrated Pest Management",
+        "content": "Integrated Pest Management (IPM) is an effective and environmentally sensitive approach to pest management. This lesson explains the core principles of IPM, including monitoring, identification, prevention, and control. You will learn how to set action thresholds to determine when intervention is needed, and explore various control methods, from biological controls like introducing natural predators to the judicious use of pesticides as a last resort. The goal of IPM is not to eliminate all pests, but to manage them to a level that is economically and environmentally sustainable.",
+        "videoUrl": "https://www.youtube.com/embed/videoseries?list=PL4_hYwCyh4h_Q3E_1g4iIykO0iB4_4w5c",
+        "quiz": [
+          {
+            "question": "What is the first step in an IPM program?",
+            "options": [
+              "Pesticide application",
+              "Introducing predators",
+              "Monitoring and identification of pests",
+              "Planting trap crops"
+            ],
+            "correctAnswer": "Monitoring and identification of pests"
+          },
+          {
+            "question": "Using a ladybug to control aphids is an example of which type of control?",
+            "options": [
+              "Chemical Control",
+              "Mechanical Control",
+              "Cultural Control",
+              "Biological Control"
+            ],
+            "correctAnswer": "Biological Control"
+          },
+          {
+            "question": "What is an 'action threshold' in IPM?",
+            "options": [
+              "The point at which pesticides are always applied.",
+              "A predetermined level of pest population at which control measures are needed.",
+              "The maximum number of beneficial insects allowed.",
+              "The budget allocated for pest control."
+            ],
+            "correctAnswer": "A predetermined level of pest population at which control measures are needed."
+          }
+        ]
+      }
+    ]
+  }
+]

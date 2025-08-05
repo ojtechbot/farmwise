@@ -2,7 +2,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { getLessonBySlug } from '@/lib/db';
+import { getLessonBySlug } from '@/lib/actions';
 import { notFound, useParams } from 'next/navigation';
 import { QuizForm } from '@/components/quiz-form';
 import Link from 'next/link';

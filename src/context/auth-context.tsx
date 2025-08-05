@@ -1,126 +1,64 @@
 'use client';
 
 import React, { createContext, useContext, useEffect, useState, ReactNode } from 'react';
-import {
-  onAuthStateChanged,
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-  signOut as firebaseSignOut,
-  GoogleAuthProvider,
-  signInWithPopup,
-  updateProfile,
-  User,
-  Auth,
-} from 'firebase/auth';
-import { doc, setDoc, getDoc, Firestore } from 'firebase/firestore';
-import { getFirebaseApp, getFirebaseAuth, getFirebaseFirestore } from '../lib/firebase';
+import type { User } from '@/lib/types';
 import { Preloader } from '@/components/preloader';
+import { authenticateUser, createUser as createUserAction } from '@/lib/actions';
+
+type UserSession = Omit<User, 'password' | 'progress'>;
 
 interface AuthContextType {
-  user: User | null;
+  user: UserSession | null;
   loading: boolean;
-  signUpWithEmail: (email: string, password: string, userData: { [key: string]: any }) => Promise<void>;
-  signInWithEmail: (email: string, password: string) => Promise<void>;
-  signInWithGoogle: () => Promise<void>;
-  signOut: () => Promise<void>;
+  signUp: (userData: any) => Promise<{ success: boolean; message?: string }>;
+  signIn: (email: string, password: string) => Promise<{ success: boolean; message?: string }>;
+  signOut: () => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<UserSession | null>(null);
   const [loading, setLoading] = useState(true);
-  const [auth, setAuth] = useState<Auth | null>(null);
-  const [db, setDb] = useState<Firestore | null>(null);
 
   useEffect(() => {
-    // This effect runs ONLY on the client, ensuring no server-side execution.
-    getFirebaseApp(); // Initialize Firebase
-    const authInstance = getFirebaseAuth();
-    const dbInstance = getFirebaseFirestore();
-    setAuth(authInstance);
-    setDb(dbInstance);
-
-    const unsubscribe = onAuthStateChanged(authInstance, async (user) => {
-      if (user) {
-        const userDocRef = doc(dbInstance, 'users', user.uid);
-        const userDoc = await getDoc(userDocRef);
-        if (userDoc.exists()) {
-          const userData = userDoc.data();
-          const enrichedUser = {
-            ...user,
-            ...userData,
-            displayName: userData.displayName || user.displayName,
-            photoURL: userData.photoURL || user.photoURL,
-          };
-          setUser(enrichedUser as User);
-        } else {
-           const displayName = user.displayName || 'New User';
-           const photoURL = user.photoURL || '';
-           await setDoc(userDocRef, {
-             email: user.email,
-             displayName: displayName,
-             photoURL: photoURL,
-           }, { merge: true });
-           const newUserDoc = await getDoc(userDocRef);
-           setUser({ ...user, ...newUserDoc.data() } as User);
-        }
-      } else {
-        setUser(null);
+    try {
+      const storedUser = localStorage.getItem('farmwise_user');
+      if (storedUser) {
+        setUser(JSON.parse(storedUser));
       }
+    } catch (error) {
+      console.error("Failed to parse user from local storage", error);
+    } finally {
       setLoading(false);
-    });
-
-    return () => unsubscribe();
-  }, []); // Empty dependency array ensures this runs once on mount
-
-  const signUpWithEmail = async (email: string, password: string, userData: { [key:string]: any }) => {
-    if (!auth || !db) throw new Error("Firebase not initialized");
-    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-    const user = userCredential.user;
-    const displayName = `${userData.firstName} ${userData.lastName}`;
-    
-    await updateProfile(user, { displayName });
-
-    const userDocRef = doc(db, 'users', user.uid);
-    await setDoc(userDocRef, {
-      uid: user.uid,
-      email: user.email,
-      displayName: displayName,
-      firstName: userData.firstName,
-      lastName: userData.lastName,
-    });
-
-    const userDoc = await getDoc(userDocRef);
-    setUser({ ...user, ...userDoc.data() } as User);
-  };
-
-  const signInWithEmail = async (email: string, password: string) => {
-    if (!auth) throw new Error("Firebase not initialized");
-    await signInWithEmailAndPassword(auth, email, password);
-  };
-
-  const signInWithGoogle = async () => {
-    if (!auth || !db) throw new Error("Firebase not initialized");
-    const provider = new GoogleAuthProvider();
-    const userCredential = await signInWithPopup(auth, provider);
-    const user = userCredential.user;
-    const userDocRef = doc(db, 'users', user.uid);
-    const userDoc = await getDoc(userDocRef);
-    if (!userDoc.exists()) {
-      await setDoc(userDocRef, {
-        uid: user.uid,
-        email: user.email,
-        displayName: user.displayName,
-        photoURL: user.photoURL,
-      }, { merge: true });
     }
+  }, []);
+
+  const signIn = async (email: string, password: string) => {
+    setLoading(true);
+    const result = await authenticateUser(email, password);
+    if (result.success && result.user) {
+      setUser(result.user);
+      localStorage.setItem('farmwise_user', JSON.stringify(result.user));
+    }
+    setLoading(false);
+    return { success: result.success, message: result.message };
   };
 
-  const signOut = async () => {
-    if (!auth) throw new Error("Firebase not initialized");
-    await firebaseSignOut(auth);
+  const signUp = async (userData: any) => {
+    setLoading(true);
+    const result = await createUserAction(userData);
+    if (result.success && result.user) {
+      setUser(result.user);
+      localStorage.setItem('farmwise_user', JSON.stringify(result.user));
+    }
+    setLoading(false);
+    return { success: result.success, message: result.message };
+  };
+
+  const signOut = () => {
     setUser(null);
+    localStorage.removeItem('farmwise_user');
   };
 
   if (loading) {
@@ -128,7 +66,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }
 
   return (
-    <AuthContext.Provider value={{ user, loading, signUpWithEmail, signInWithEmail, signInWithGoogle, signOut }}>
+    <AuthContext.Provider value={{ user, loading, signUp, signIn, signOut }}>
       {children}
     </AuthContext.Provider>
   );

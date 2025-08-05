@@ -22,3 +22,21 @@ export interface Tutorial {
   imageUrl: string;
   lessons: Lesson[];
 }
+
+export interface User {
+    id: string;
+    firstName: string;
+    lastName: string;
+    displayName: string;
+    email: string;
+    password?: string; // Should be hashed in a real app
+    photoURL?: string;
+    progress: {
+        quizzes: {
+            lessonSlug: string;
+            score: number;
+            totalQuestions: number;
+            completedAt: string;
+        }[];
+    };
+}

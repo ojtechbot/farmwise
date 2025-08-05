@@ -17,7 +17,7 @@ import { useRouter } from "next/navigation"
 import { useToast } from "@/hooks/use-toast"
 
 export default function LoginPage() {
-  const { signInWithEmail, signInWithGoogle } = useAuth();
+  const { signIn } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
@@ -27,33 +27,18 @@ export default function LoginPage() {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    try {
-      await signInWithEmail(email, password);
+    const result = await signIn(email, password);
+    if (result.success) {
       router.push('/dashboard');
-    } catch (error: any) {
-       toast({
+    } else {
+      toast({
         variant: "destructive",
         title: "Login Failed",
-        description: error.message,
+        description: result.message,
       });
       setLoading(false);
     }
   };
-  
-  const handleGoogleLogin = async () => {
-    setLoading(true);
-    try {
-      await signInWithGoogle();
-      router.push('/dashboard');
-    } catch (error: any) {
-      toast({
-        variant: "destructive",
-        title: "Login Failed",
-        description: error.message,
-      });
-      setLoading(false);
-    }
-  }
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-secondary">
@@ -103,10 +88,6 @@ export default function LoginPage() {
               <Button type="submit" className="w-full" disabled={loading}>
                 {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                 Login
-              </Button>
-              <Button variant="outline" className="w-full" onClick={handleGoogleLogin} disabled={loading} type="button">
-                 {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                Login with Google
               </Button>
             </div>
           </form>

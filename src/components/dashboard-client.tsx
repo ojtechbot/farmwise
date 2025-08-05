@@ -11,11 +11,10 @@ import {
 import { Progress } from '@/components/ui/progress';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { TutorialCard } from '@/components/tutorial-card';
-import { AiSuggestionCard } from '@/components/ai-suggestion-card';
 import type { Tutorial } from '@/lib/types';
 import { BookOpen, Target, Search, GraduationCap } from 'lucide-react';
 import { useAuth } from '@/context/auth-context';
-import { getUserProgress, getTutorialsRealtime } from '@/lib/db';
+import { getUserProgress, getTutorials } from '@/lib/actions';
 import { Skeleton } from './ui/skeleton';
 
 export function DashboardClient() {
@@ -28,26 +27,31 @@ export function DashboardClient() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!user) return; // Don't fetch anything if there's no user
-    const unsubscribe = getTutorialsRealtime((fetchedTutorials) => {
-      setTutorials(fetchedTutorials);
-      const totalLessonsCount = fetchedTutorials.reduce((acc, t) => acc + (t.lessons?.length || 0), 0);
+    const loadData = async () => {
+        if (!user) return;
+        setLoading(true);
+        try {
+            const [fetchedTutorials, userProgress] = await Promise.all([
+                getTutorials(),
+                getUserProgress(user.id)
+            ]);
 
-      if (totalLessonsCount > 0) {
-        getUserProgress(user.uid).then(userProgress => {
-          if (userProgress && userProgress.quizzes) {
-            const completedSlugs = new Set(userProgress.quizzes.map((q: any) => q.lessonSlug));
-            const completedCount = completedSlugs.size;
-            setCompletedModules(completedCount);
-            setProgress(Math.round((completedCount / totalLessonsCount) * 100));
-          }
-        });
-      }
-      setLoading(false);
-    });
+            setTutorials(fetchedTutorials);
+            const totalLessonsCount = fetchedTutorials.reduce((acc, t) => acc + (t.lessons?.length || 0), 0);
+            
+            if (userProgress && userProgress.quizzes && totalLessonsCount > 0) {
+                const completedCount = userProgress.quizzes.length;
+                setCompletedModules(completedCount);
+                setProgress(Math.round((completedCount / totalLessonsCount) * 100));
+            }
 
-    // Cleanup subscription on component unmount
-    return () => unsubscribe();
+        } catch (error) {
+            console.error("Failed to load dashboard data", error);
+        } finally {
+            setLoading(false);
+        }
+    }
+    loadData();
   }, [user]);
   
   const totalLessons = tutorials.reduce((acc, t) => acc + (t.lessons?.length || 0), 0);
@@ -94,7 +98,7 @@ export function DashboardClient() {
         <Card className="shadow-md hover:shadow-lg transition-shadow">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">
-              Tutorials Completed
+              Modules Completed
             </CardTitle>
             <GraduationCap className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
@@ -102,11 +106,25 @@ export function DashboardClient() {
              {loading ? <Skeleton className="h-8 w-1/4 my-1" /> : <div className="text-2xl font-bold">{completedModules} / {totalTutorials}</div>}
              {loading ? <Skeleton className="h-4 w-3/4 mt-1" /> :
             <p className="text-xs text-muted-foreground">
-              modules completed across all categories
+              across all available tutorials
             </p>}
           </CardContent>
         </Card>
-        <AiSuggestionCard />
+         <Card className="shadow-md hover:shadow-lg transition-shadow">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">
+              Available Tutorials
+            </CardTitle>
+            <BookOpen className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+             {loading ? <Skeleton className="h-8 w-1/4 my-1" /> : <div className="text-2xl font-bold">{totalTutorials}</div>}
+             {loading ? <Skeleton className="h-4 w-3/4 mt-1" /> :
+            <p className="text-xs text-muted-foreground">
+              tutorials covering various topics
+            </p>}
+          </CardContent>
+        </Card>
       </div>
 
       <div>

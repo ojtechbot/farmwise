@@ -20,6 +20,7 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 import { generateAvatar } from '@/ai/flows/generate-avatar-flow';
+import type { GenerateAvatarInput } from '@/ai/flows/generate-avatar-types';
 
 export default function ProfilePage() {
   const { user, updateUser, loading: authLoading } = useAuth();

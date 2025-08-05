@@ -4,26 +4,16 @@
  * @fileOverview An AI flow to generate a user avatar image.
  *
  * - generateAvatar - A function that generates an avatar image from a text prompt.
- * - GenerateAvatarInput - The input type for the generateAvatar function.
- * - GenerateAvatarOutput - The return type for the generateAvatar function.
  */
 
 import { ai } from '@/ai/genkit';
-import { z } from 'genkit';
+import {
+  GenerateAvatarInput,
+  GenerateAvatarInputSchema,
+  GenerateAvatarOutput,
+  GenerateAvatarOutputSchema
+} from '@/ai/flows/generate-avatar-types';
 
-export const GenerateAvatarInputSchema = z.object({
-  prompt: z.string().describe('A text prompt describing the desired avatar.'),
-});
-export type GenerateAvatarInput = z.infer<typeof GenerateAvatarInputSchema>;
-
-export const GenerateAvatarOutputSchema = z.object({
-  photoDataUri: z
-    .string()
-    .describe(
-      "The generated avatar image as a data URI, including MIME type and Base64 encoding. E.g., 'data:image/png;base64,<encoded_data>'."
-    ),
-});
-export type GenerateAvatarOutput = z.infer<typeof GenerateAvatarOutputSchema>;
 
 export async function generateAvatar(input: GenerateAvatarInput): Promise<GenerateAvatarOutput> {
   return generateAvatarFlow(input);

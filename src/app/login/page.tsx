@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Leaf, Loader2 } from "lucide-react"
+import { Leaf, Loader2, Eye, EyeOff } from "lucide-react"
 import Link from "next/link"
 import { useAuth } from "@/context/auth-context"
 import { useState } from "react"
@@ -21,6 +21,7 @@ export default function LoginPage() {
   const { signIn } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const { toast } = useToast();
@@ -78,14 +79,23 @@ export default function LoginPage() {
                     Forgot your password?
                   </Link>
                 </div>
-                <Input 
-                  id="password" 
-                  type="password" 
-                  required
-                  placeholder="********"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                />
+                <div className="relative">
+                  <Input 
+                    id="password" 
+                    type={showPassword ? "text" : "password"}
+                    required
+                    placeholder="********"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute inset-y-0 right-0 flex items-center pr-3"
+                  >
+                    {showPassword ? <EyeOff className="h-4 w-4 text-muted-foreground" /> : <Eye className="h-4 w-4 text-muted-foreground" />}
+                  </button>
+                </div>
               </div>
                <div className="flex items-center space-x-2">
                 <Checkbox id="remember-me" />

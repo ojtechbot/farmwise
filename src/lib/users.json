@@ -22,5 +22,17 @@
     "progress": {
       "quizzes": []
     }
+  },
+  {
+    "id": "1754391873876",
+    "firstName": "David",
+    "lastName": "Robinson",
+    "displayName": "David Robinson",
+    "email": "david@gmail.com",
+    "password": "Beesystem1#",
+    "photoURL": "https://i.pravatar.cc/150?u=david@gmail.com",
+    "progress": {
+      "quizzes": []
+    }
   }
 ]

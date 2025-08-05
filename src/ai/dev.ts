@@ -3,3 +3,4 @@ config();
 
 import '@/ai/flows/suggest-learning-modules.ts';
 import '@/ai/flows/tutor-flow.ts';
+import '@/ai/flows/generate-avatar-flow.ts';

@@ -102,6 +102,7 @@ const UpdateUserSchema = z.object({
   lastName: z.string().min(1, 'Last name is required'),
   displayName: z.string().min(1, 'Display name is required'),
   email: z.string().email('Invalid email address'),
+  photoURL: z.string().optional().nullable(),
 });
 
 export async function updateUser(userData: User) {
@@ -125,6 +126,7 @@ export async function updateUser(userData: User) {
     lastName: userData.lastName,
     displayName: userData.displayName,
     email: userData.email, // email is read-only in the form, but we pass it for validation
+    photoURL: userData.photoURL,
   };
 
   await writeUsers(users);

@@ -30,7 +30,7 @@ export interface User {
     displayName: string;
     email: string;
     password?: string; // Should be hashed in a real app
-    photoURL?: string;
+    photoURL?: string | null; // Can be a URL or a data URI
     progress: {
         quizzes: {
             lessonSlug: string;

@@ -10,6 +10,7 @@ import {
 } from '@/components/ui/select';
 import { Progress } from '@/components/ui/progress';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { AiSuggestionCard } from '@/components/ai-suggestion-card';
 import { TutorialCard } from '@/components/tutorial-card';
 import type { Tutorial } from '@/lib/types';
 import { BookOpen, Target, Search, GraduationCap } from 'lucide-react';
@@ -25,6 +26,35 @@ export function DashboardClient() {
   const { user } = useAuth();
   const [tutorials, setTutorials] = useState<Tutorial[]>([]);
   const [loading, setLoading] = useState(true);
+
+  // Load persisted filters on component mount
+  useEffect(() => {
+    try {
+      const persistedSearch = localStorage.getItem('dashboard_searchTerm');
+      const persistedCategory = localStorage.getItem('dashboard_filterCategory');
+      if (persistedSearch) setSearchTerm(persistedSearch);
+      if (persistedCategory) setFilterCategory(persistedCategory);
+    } catch (error) {
+      console.error("Could not load persisted filters from local storage", error);
+    }
+  }, []);
+
+  // Persist filters whenever they change
+  useEffect(() => {
+    try {
+      localStorage.setItem('dashboard_searchTerm', searchTerm);
+    } catch (error) {
+      console.error("Could not persist search term to local storage", error);
+    }
+  }, [searchTerm]);
+
+  useEffect(() => {
+     try {
+      localStorage.setItem('dashboard_filterCategory', filterCategory);
+    } catch (error) {
+      console.error("Could not persist category filter to local storage", error);
+    }
+  }, [filterCategory]);
 
   useEffect(() => {
     const loadData = async () => {
@@ -110,21 +140,7 @@ export function DashboardClient() {
             </p>}
           </CardContent>
         </Card>
-         <Card className="shadow-md hover:shadow-lg transition-shadow">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">
-              Available Tutorials
-            </CardTitle>
-            <BookOpen className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-             {loading ? <Skeleton className="h-8 w-1/4 my-1" /> : <div className="text-2xl font-bold">{totalTutorials}</div>}
-             {loading ? <Skeleton className="h-4 w-3/4 mt-1" /> :
-            <p className="text-xs text-muted-foreground">
-              tutorials covering various topics
-            </p>}
-          </CardContent>
-        </Card>
+         <AiSuggestionCard />
       </div>
 
       <div>

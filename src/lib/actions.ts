@@ -12,6 +12,10 @@ async function readUsers(): Promise<User[]> {
   try {
     await fs.access(usersFilePath);
     const data = await fs.readFile(usersFilePath, 'utf-8');
+    // Handle empty file case
+    if (data.trim() === '') {
+        return [];
+    }
     return JSON.parse(data);
   } catch (error) {
     // If the file doesn't exist or other errors occur, return an empty array
@@ -20,7 +24,20 @@ async function readUsers(): Promise<User[]> {
 }
 
 async function writeUsers(users: User[]): Promise<void> {
-  await fs.writeFile(usersFilePath, JSON.stringify(users, null, 2));
+  // Use a temporary file to prevent data loss on write error
+  const tempFilePath = usersFilePath + '.tmp';
+  try {
+    await fs.writeFile(tempFilePath, JSON.stringify(users, null, 2));
+    await fs.rename(tempFilePath, usersFilePath);
+  } catch(error) {
+    // If an error occurs, try to clean up the temp file
+    try {
+        await fs.unlink(tempFilePath);
+    } catch (unlinkError) {
+        // Ignore errors on cleanup
+    }
+    throw error;
+  }
 }
 
 export async function getUserByEmail(email: string): Promise<User | null> {
@@ -83,6 +100,10 @@ async function readTutorials(): Promise<Tutorial[]> {
   try {
     await fs.access(tutorialsFilePath);
     const data = await fs.readFile(tutorialsFilePath, 'utf-8');
+     // Handle empty file case
+    if (data.trim() === '') {
+        return [];
+    }
     return JSON.parse(data);
   } catch (error) {
      // If the file doesn't exist or other errors occur, return an empty array
@@ -131,9 +152,17 @@ export async function saveQuizResult(userId: string, lessonSlug: string, score: 
         totalQuestions,
         completedAt: new Date().toISOString(),
     };
+    
+    // Ensure progress structure exists
+    if (!users[userIndex].progress) {
+        users[userIndex].progress = { quizzes: [] };
+    }
+    
+    if (!users[userIndex].progress.quizzes) {
+         users[userIndex].progress.quizzes = [];
+    }
 
-    const existingQuizzes = users[userIndex].progress.quizzes || [];
-    const existingQuizIndex = existingQuizzes.findIndex((q: any) => q.lessonSlug === lessonSlug);
+    const existingQuizIndex = users[userIndex].progress.quizzes.findIndex((q: any) => q.lessonSlug === lessonSlug);
 
     if (existingQuizIndex > -1) {
         users[userIndex].progress.quizzes[existingQuizIndex] = newQuizData;

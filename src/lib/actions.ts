@@ -96,6 +96,43 @@ export async function authenticateUser(email: string, password: string): Promise
     return { success: true, user: userWithoutPassword };
 }
 
+const UpdateUserSchema = z.object({
+  id: z.string(),
+  firstName: z.string().min(1, 'First name is required'),
+  lastName: z.string().min(1, 'Last name is required'),
+  displayName: z.string().min(1, 'Display name is required'),
+  email: z.string().email('Invalid email address'),
+});
+
+export async function updateUser(userData: User) {
+  const validation = UpdateUserSchema.safeParse(userData);
+   if (!validation.success) {
+    return { success: false, message: validation.error.errors.map(e => e.message).join(', ') };
+  }
+
+  const users = await readUsers();
+  const userIndex = users.findIndex(u => u.id === userData.id);
+
+  if (userIndex === -1) {
+    return { success: false, message: 'User not found.' };
+  }
+  
+  // Update user data, preserving password and progress
+  const originalUser = users[userIndex];
+  users[userIndex] = {
+    ...originalUser,
+    firstName: userData.firstName,
+    lastName: userData.lastName,
+    displayName: userData.displayName,
+    email: userData.email, // email is read-only in the form, but we pass it for validation
+  };
+
+  await writeUsers(users);
+
+  const { password: _, ...userWithoutPassword } = users[userIndex];
+  return { success: true, user: userWithoutPassword };
+}
+
 async function readTutorials(): Promise<Tutorial[]> {
   try {
     await fs.access(tutorialsFilePath);

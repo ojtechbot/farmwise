@@ -10,7 +10,7 @@ import {
   SidebarFooter,
 } from '@/components/ui/sidebar';
 import { Header } from '@/components/header';
-import { Home, BookOpen, Fish, Tractor, TestTube2, LogOut } from 'lucide-react';
+import { Home, BookOpen, User, Settings, LogOut, Tractor } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useAuth } from '@/context/auth-context';
@@ -61,7 +61,7 @@ export default function DashboardLayout({
             </SidebarMenuButton>
           </SidebarMenuItem>
           <SidebarMenuItem>
-            <SidebarMenuButton asChild isActive={pathname.startsWith('/learn')}>
+            <SidebarMenuButton asChild isActive={pathname.startsWith('/learn') || pathname.startsWith('/quiz')}>
               <Link href="/dashboard">
                 <BookOpen />
                 Tutorials
@@ -69,18 +69,18 @@ export default function DashboardLayout({
             </SidebarMenuButton>
           </SidebarMenuItem>
           <SidebarMenuItem>
-            <SidebarMenuButton asChild>
-              <Link href="#">
-                <Fish />
-                My Fish Farms
+            <SidebarMenuButton asChild isActive={pathname === '/dashboard/profile'}>
+              <Link href="/dashboard/profile">
+                <User />
+                Profile
               </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
            <SidebarMenuItem>
-            <SidebarMenuButton asChild>
-              <Link href="#">
-                <TestTube2 />
-                My Quizzes
+            <SidebarMenuButton asChild isActive={pathname === '/dashboard/settings'}>
+              <Link href="/dashboard/settings">
+                <Settings />
+                Settings
               </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>

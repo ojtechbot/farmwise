@@ -46,6 +46,29 @@ export default function LearnPage() {
     fetchTutorial();
   }, [slug]);
 
+  const getYouTubeEmbedUrl = (url: string) => {
+    if (!url) return '';
+    let videoId = '';
+    // Standard watch URL
+    if (url.includes('watch?v=')) {
+      videoId = url.split('watch?v=')[1];
+      const ampersandPosition = videoId.indexOf('&');
+      if (ampersandPosition !== -1) {
+        videoId = videoId.substring(0, ampersandPosition);
+      }
+    }
+    // Shortened youtu.be URL
+    else if (url.includes('youtu.be/')) {
+      videoId = url.split('youtu.be/')[1];
+    }
+    // Already an embed URL
+    else if (url.includes('/embed/')) {
+      return url;
+    }
+    
+    return videoId ? `https://www.youtube.com/embed/${videoId}` : '';
+  };
+
   if (loading) {
      return (
       <div className="mx-auto max-w-4xl space-y-8">
@@ -92,6 +115,8 @@ export default function LearnPage() {
     );
   }
 
+  const embedUrl = lesson.videoUrl ? getYouTubeEmbedUrl(lesson.videoUrl) : '';
+
   return (
     <div className="mx-auto max-w-4xl">
        <div className="mb-8">
@@ -107,13 +132,13 @@ export default function LearnPage() {
         From the module: <span className="font-semibold text-primary">{tutorial.title}</span>
       </p>
       
-      {lesson.videoUrl && (
+      {embedUrl && (
         <Card className="mb-8 overflow-hidden">
             <div className="aspect-video">
                 <iframe 
                     width="100%" 
                     height="100%" 
-                    src={lesson.videoUrl} 
+                    src={embedUrl} 
                     title="YouTube video player" 
                     frameBorder="0" 
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 

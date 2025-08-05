@@ -10,13 +10,12 @@ const tutorialsFilePath = path.join(process.cwd(), 'src', 'lib', 'tutorials.json
 
 async function readUsers(): Promise<User[]> {
   try {
+    await fs.access(usersFilePath);
     const data = await fs.readFile(usersFilePath, 'utf-8');
     return JSON.parse(data);
   } catch (error) {
-    if ((error as NodeJS.ErrnoException).code === 'ENOENT') {
-      return []; // Return empty array if file doesn't exist
-    }
-    throw error;
+    // If the file doesn't exist or other errors occur, return an empty array
+    return [];
   }
 }
 
@@ -82,13 +81,12 @@ export async function authenticateUser(email: string, password: string): Promise
 
 async function readTutorials(): Promise<Tutorial[]> {
   try {
+    await fs.access(tutorialsFilePath);
     const data = await fs.readFile(tutorialsFilePath, 'utf-8');
     return JSON.parse(data);
   } catch (error) {
-    if ((error as NodeJS.ErrnoException).code === 'ENOENT') {
-      return []; // Return empty array if file doesn't exist
-    }
-    throw error;
+     // If the file doesn't exist or other errors occur, return an empty array
+    return [];
   }
 }
 

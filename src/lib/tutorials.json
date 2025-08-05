@@ -146,5 +146,887 @@
         ]
       }
     ]
+  },
+  {
+    "id": "advanced-drip-irrigation",
+    "slug": "advanced-drip-irrigation",
+    "title": "Advanced Drip Irrigation Techniques",
+    "description": "Optimize water usage and crop yield with advanced drip irrigation strategies.",
+    "category": "Crop Production",
+    "imageUrl": "https://placehold.co/600x400.png",
+    "lessons": [
+      {
+        "id": "drip-irrigation-scheduling",
+        "slug": "drip-irrigation-scheduling",
+        "title": "Scheduling and Automation in Drip Irrigation",
+        "content": "Effective drip irrigation is not just about the hardware; it's about timing. This lesson delves into creating efficient irrigation schedules based on crop type, soil moisture, and weather data. We'll cover automation using timers and sensors to ensure your plants get the right amount of water at the right time, minimizing waste and maximizing plant health. You will also learn about pressure regulation and filter maintenance for system longevity.",
+        "videoUrl": "https://www.youtube.com/embed/videoseries?list=PL4_hYwCyh4h_Q3E_1g4iIykO0iB4_4w5c",
+        "quiz": [
+          {
+            "question": "What is the main advantage of using soil moisture sensors in irrigation?",
+            "options": [
+              "They measure the temperature of the soil.",
+              "They provide real-time data to prevent over or under-watering.",
+              "They add nutrients to the soil.",
+              "They are only for aesthetic purposes."
+            ],
+            "correctAnswer": "They provide real-time data to prevent over or under-watering."
+          },
+          {
+            "question": "What does 'emitter clogging' refer to in drip systems?",
+            "options": [
+              "The water source running dry.",
+              "The pipes being too long.",
+              "Blockages in the drip emitters from minerals or debris.",
+              "The timer malfunctioning."
+            ],
+            "correctAnswer": "Blockages in the drip emitters from minerals or debris."
+          },
+          {
+            "question": "Why is watering in the early morning often recommended?",
+            "options": [
+              "It's the only time plants can absorb water.",
+              "It reduces water loss from evaporation.",
+              "It attracts beneficial insects.",
+              "It washes away pests."
+            ],
+            "correctAnswer": "It reduces water loss from evaporation."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "tilapia-farming-101",
+    "slug": "tilapia-farming-101",
+    "title": "Tilapia Farming 101",
+    "description": "A beginner's guide to raising tilapia, one of the most popular fish in aquaculture.",
+    "category": "Fish Farming",
+    "imageUrl": "https://placehold.co/600x400.png",
+    "lessons": [
+      {
+        "id": "tilapia-tank-setup",
+        "slug": "tilapia-tank-setup",
+        "title": "Setting Up Your Tilapia Tank",
+        "content": "This lesson walks you through the essential components of a tilapia farming system. From selecting the right tank size and material to setting up proper filtration and aeration, we'll cover everything you need to create a healthy environment for your fish. We'll discuss stocking densities, water temperature requirements, and the importance of a properly cycled biofilter before introducing your tilapia fingerlings.",
+        "videoUrl": "https://www.youtube.com/embed/videoseries?list=PL4_hYwCyh4h_Q3E_1g4iIykO0iB4_4w5c",
+        "quiz": [
+          {
+            "question": "What is a critical first step before adding fish to a new tank system?",
+            "options": [
+              "Painting the tank blue.",
+              "Cycling the biofilter to establish beneficial bacteria.",
+              "Adding decorative plants.",
+              "Filling the tank with carbonated water."
+            ],
+            "correctAnswer": "Cycling the biofilter to establish beneficial bacteria."
+          },
+          {
+            "question": "What is the generally recommended water temperature range for growing tilapia?",
+            "options": [
+              "10-15°C (50-59°F)",
+              "18-22°C (64-72°F)",
+              "25-30°C (77-86°F)",
+              "35-40°C (95-104°F)"
+            ],
+            "correctAnswer": "25-30°C (77-86°F)"
+          },
+          {
+            "question": "A higher 'stocking density' means...",
+            "options": [
+              "Fewer fish per gallon of water.",
+              "More fish per gallon of water.",
+              "Using a specific type of fish food.",
+              "The water is denser than usual."
+            ],
+            "correctAnswer": "More fish per gallon of water."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "organic-weed-control",
+    "slug": "organic-weed-control",
+    "title": "Organic Weed Control Methods",
+    "description": "Manage weeds effectively without relying on synthetic herbicides.",
+    "category": "Pest Control",
+    "imageUrl": "https://placehold.co/600x400.png",
+    "lessons": [
+      {
+        "id": "mulching-and-cover-crops",
+        "slug": "mulching-and-cover-crops",
+        "title": "Using Mulch and Cover Crops for Weeds",
+        "content": "Discover two powerful organic techniques for weed suppression. This lesson explains how applying a thick layer of mulch (like straw, wood chips, or leaves) can block sunlight and prevent weed seeds from germinating. We will also explore the benefits of planting cover crops (like clover or rye) during the off-season to outcompete weeds, improve soil health, and prevent erosion.",
+        "videoUrl": "https://www.youtube.com/embed/videoseries?list=PL4_hYwCyh4h_Q3E_1g4iIykO0iB4_4w5c",
+        "quiz": [
+          {
+            "question": "How does mulch primarily suppress weeds?",
+            "options": [
+              "It poisons the weed seeds.",
+              "It makes the soil too acidic.",
+              "It blocks sunlight, preventing germination.",
+              "It attracts insects that eat weeds."
+            ],
+            "correctAnswer": "It blocks sunlight, preventing germination."
+          },
+          {
+            "question": "Which of the following is NOT a primary benefit of cover crops?",
+            "options": [
+              "Suppressing weeds.",
+              "Improving soil structure.",
+              "Harvesting a cash crop.",
+              "Adding nutrients to the soil."
+            ],
+            "correctAnswer": "Harvesting a cash crop."
+          },
+          {
+            "question": "What is 'solarization' as a weed control method?",
+            "options": [
+              "Using solar-powered robots to pull weeds.",
+              "Planting only sun-loving plants.",
+              "Covering soil with clear plastic to heat it and kill weed seeds.",
+              "Watering plants at night."
+            ],
+            "correctAnswer": "Covering soil with clear plastic to heat it and kill weed seeds."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "composting-for-beginners",
+    "slug": "composting-for-beginners",
+    "title": "Composting for Beginners",
+    "description": "Turn your organic waste into nutrient-rich compost for your garden.",
+    "category": "Crop Production",
+    "imageUrl": "https://placehold.co/600x400.png",
+    "lessons": [
+      {
+        "id": "compost-balancing",
+        "slug": "compost-balancing",
+        "title": "Balancing Greens and Browns",
+        "content": "The key to successful composting is maintaining the right ratio of 'green' and 'brown' materials. This lesson teaches you what materials fall into each category—'greens' like kitchen scraps and grass clippings are rich in nitrogen, while 'browns' like dried leaves and cardboard are rich in carbon. Learn the ideal carbon-to-nitrogen ratio and how to troubleshoot common composting problems like bad odors or slow decomposition.",
+        "videoUrl": "https://www.youtube.com/embed/videoseries?list=PL4_hYwCyh4h_Q3E_1g4iIykO0iB4_4w5c",
+        "quiz": [
+          {
+            "question": "Which of the following is a 'brown' material for composting?",
+            "options": [
+              "Vegetable scraps",
+              "Coffee grounds",
+              "Dried leaves",
+              "Grass clippings"
+            ],
+            "correctAnswer": "Dried leaves"
+          },
+          {
+            "question": "A compost pile that smells like ammonia likely has...",
+            "options": [
+              "Too many browns (carbon).",
+              "Too many greens (nitrogen).",
+              "Not enough water.",
+              "Too much water."
+            ],
+            "correctAnswer": "Too many greens (nitrogen)."
+          },
+          {
+            "question": "Why is turning or aerating a compost pile important?",
+            "options": [
+              "It helps distribute heat, moisture, and oxygen for microbes.",
+              "It makes the pile look neater.",
+              "It's only necessary for indoor compost bins.",
+              "It cools the pile down to prevent fires."
+            ],
+            "correctAnswer": "It helps distribute heat, moisture, and oxygen for microbes."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "catfish-pond-management",
+    "slug": "catfish-pond-management",
+    "title": "Catfish Pond Management",
+    "description": "Learn the specifics of managing a healthy and productive catfish pond.",
+    "category": "Fish Farming",
+    "imageUrl": "https://placehold.co/600x400.png",
+    "lessons": [
+      {
+        "id": "catfish-feeding",
+        "slug": "catfish-feeding",
+        "title": "Feeding Strategies for Catfish",
+        "content": "Proper nutrition is key to growing healthy catfish. This lesson covers different types of catfish feed, from floating pellets to sinking feed, and when to use them. We'll discuss feed conversion ratios (FCR), how to determine the right amount of feed based on fish biomass, and feeding schedules. Overfeeding can harm water quality, while underfeeding stunts growth, so getting it right is crucial for success.",
+        "videoUrl": "https://www.youtube.com/embed/videoseries?list=PL4_hYwCyh4h_Q3E_1g4iIykO0iB4_4w5c",
+        "quiz": [
+          {
+            "question": "What is a Feed Conversion Ratio (FCR)?",
+            "options": [
+              "The speed at which fish eat.",
+              "The ratio of feed given to weight gained by the fish.",
+              "The type of protein in the feed.",
+              "The daily cost of feeding."
+            ],
+            "correctAnswer": "The ratio of feed given to weight gained by the fish."
+          },
+          {
+            "question": "Why are floating pellets often preferred for pond-raised catfish?",
+            "options": [
+              "They are cheaper than sinking pellets.",
+              "They allow the farmer to observe the fish's feeding activity.",
+              "They contain more protein.",
+              "They dissolve faster."
+            ],
+            "correctAnswer": "They allow the farmer to observe the fish's feeding activity."
+          },
+          {
+            "question": "What is a common consequence of overfeeding in a fish pond?",
+            "options": [
+              "The fish grow faster.",
+              "The pond water becomes cleaner.",
+              "It leads to poor water quality due to uneaten, decaying feed.",
+              "It prevents diseases."
+            ],
+            "correctAnswer": "It leads to poor water quality due to uneaten, decaying feed."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "beneficial-insects-id",
+    "slug": "beneficial-insects-id",
+    "title": "Identifying Beneficial Insects",
+    "description": "Learn to distinguish garden friends from foes for better pest control.",
+    "category": "Pest Control",
+    "imageUrl": "https://placehold.co/600x400.png",
+    "lessons": [
+      {
+        "id": "meet-the-predators",
+        "slug": "meet-the-predators",
+        "title": "Meet Your Garden's Predators",
+        "content": "Not all bugs are bad! This lesson introduces you to common beneficial insects like ladybugs, lacewings, and praying mantises. You'll learn to identify them at different life stages and understand which pests they help control. We'll also cover how to attract and retain these natural allies in your garden by providing food, water, and shelter, creating a balanced ecosystem that reduces the need for pesticides.",
+        "videoUrl": "https://www.youtube.com/embed/videoseries?list=PL4_hYwCyh4h_Q3E_1g4iIykO0iB4_4w5c",
+        "quiz": [
+          {
+            "question": "The larval stage of a ladybug is known for eating large quantities of which pest?",
+            "options": [
+              "Slugs",
+              "Aphids",
+              "Caterpillars",
+              "Grasshoppers"
+            ],
+            "correctAnswer": "Aphids"
+          },
+          {
+            "question": "Which of these is a way to attract beneficial insects to your garden?",
+            "options": [
+              "Spraying broad-spectrum insecticides.",
+              "Removing all flowers.",
+              "Planting a variety of flowering plants, especially small-flowered ones.",
+              "Keeping the garden perfectly clean of any debris."
+            ],
+            "correctAnswer": "Planting a variety of flowering plants, especially small-flowered ones."
+          },
+          {
+            "question": "What is a common name for the larva of a lacewing?",
+            "options": [
+              "Grub",
+              "Maggot",
+              "Aphid lion",
+              "Wireworm"
+            ],
+            "correctAnswer": "Aphid lion"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "crop-rotation-planning",
+    "slug": "crop-rotation-planning",
+    "title": "Crop Rotation Planning",
+    "description": "Master the art of crop rotation to improve soil and reduce pests.",
+    "category": "Crop Production",
+    "imageUrl": "https://placehold.co/600x400.png",
+    "lessons": [
+      {
+        "id": "designing-rotation-plan",
+        "slug": "designing-rotation-plan",
+        "title": "Designing a 4-Year Rotation Plan",
+        "content": "Crop rotation is a cornerstone of sustainable agriculture. This lesson guides you through creating a simple 4-year crop rotation plan by grouping plants into families (e.g., legumes, brassicas, nightshades). Learn how rotating these families helps prevent the buildup of soil-borne diseases and pests, and how it can improve soil fertility by alternating heavy-feeding crops with nitrogen-fixing ones like beans and peas.",
+        "videoUrl": "https://www.youtube.com/embed/videoseries?list=PL4_hYwCyh4h_Q3E_1g4iIykO0iB4_4w5c",
+        "quiz": [
+          {
+            "question": "Why should you avoid planting crops from the same family in the same spot year after year?",
+            "options": [
+              "It looks boring.",
+              "It encourages the buildup of specific pests and diseases.",
+              "It uses too much water.",
+              "The plants will cross-pollinate."
+            ],
+            "correctAnswer": "It encourages the buildup of specific pests and diseases."
+          },
+          {
+            "question": "Legumes (like beans and peas) are valuable in a rotation because they...",
+            "options": [
+              "Repel all insects.",
+              "Use up a lot of nitrogen from the soil.",
+              "Fix atmospheric nitrogen into the soil.",
+              "Require very little sunlight."
+            ],
+            "correctAnswer": "Fix atmospheric nitrogen into the soil."
+          },
+          {
+            "question": "Which of these are all in the nightshade family?",
+            "options": [
+              "Corn, Squash, Beans",
+              "Broccoli, Cabbage, Kale",
+              "Tomatoes, Peppers, Potatoes",
+              "Lettuce, Carrots, Onions"
+            ],
+            "correctAnswer": "Tomatoes, Peppers, Potatoes"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "aquaponics-basics",
+    "slug": "aquaponics-basics",
+    "title": "Introduction to Aquaponics",
+    "description": "Explore the symbiotic system of raising fish and plants together.",
+    "category": "Fish Farming",
+    "imageUrl": "https://placehold.co/600x400.png",
+    "lessons": [
+      {
+        "id": "aquaponics-cycle",
+        "slug": "aquaponics-cycle",
+        "title": "The Aquaponics Cycle",
+        "content": "Aquaponics combines aquaculture (raising fish) and hydroponics (growing plants in water) in one integrated system. This lesson explains the nitrogen cycle at the heart of aquaponics: fish produce waste rich in ammonia, beneficial bacteria convert this ammonia into nitrates, and plants absorb these nitrates as nutrients. The clean water is then returned to the fish tank. This creates a highly efficient, closed-loop system that conserves water and eliminates the need for synthetic fertilizers.",
+        "videoUrl": "https://www.youtube.com/embed/videoseries?list=PL4_hYwCyh4h_Q3E_1g4iIykO0iB4_4w5c",
+        "quiz": [
+          {
+            "question": "In aquaponics, what is the primary role of the bacteria?",
+            "options": [
+              "To feed the fish.",
+              "To convert fish waste (ammonia) into plant nutrients (nitrates).",
+              "To keep the water clear.",
+              "To feed the plants directly."
+            ],
+            "correctAnswer": "To convert fish waste (ammonia) into plant nutrients (nitrates)."
+          },
+          {
+            "question": "What is the main benefit of aquaponics over traditional agriculture?",
+            "options": [
+              "It uses significantly less water.",
+              "It requires no electricity.",
+              "It can be done in complete darkness.",
+              "It works better for root vegetables like potatoes."
+            ],
+            "correctAnswer": "It uses significantly less water."
+          },
+          {
+            "question": "Which components are essential for a basic aquaponics system?",
+            "options": [
+              "A fish tank, a grow bed, and soil.",
+              "A fish tank, a grow bed, and a water pump.",
+              "Only a fish tank and plants.",
+              "A grow bed, soil, and fertilizer."
+            ],
+            "correctAnswer": "A fish tank, a grow bed, and a water pump."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "fungal-disease-management",
+    "slug": "fungal-disease-management",
+    "title": "Managing Fungal Diseases",
+    "description": "Learn to identify and treat common fungal diseases like powdery mildew and blight.",
+    "category": "Pest Control",
+    "imageUrl": "https://placehold.co/600x400.png",
+    "lessons": [
+      {
+        "id": "preventing-fungal-diseases",
+        "slug": "preventing-fungal-diseases",
+        "title": "Prevention of Fungal Diseases",
+        "content": "The best way to manage fungal diseases is to prevent them from taking hold. This lesson focuses on preventative strategies, such as ensuring good air circulation by properly spacing plants, watering at the base of plants to keep foliage dry, and choosing disease-resistant varieties. We'll also discuss the importance of garden sanitation, like removing and destroying infected plant material to prevent spores from spreading.",
+        "videoUrl": "https://www.youtube.com/embed/videoseries?list=PL4_hYwCyh4h_Q3E_1g4iIykO0iB4_4w5c",
+        "quiz": [
+          {
+            "question": "What condition is most favorable for the development of powdery mildew?",
+            "options": [
+              "Cold, wet conditions",
+              "Hot, dry conditions",
+              "High humidity and moderate temperatures",
+              "Freezing temperatures"
+            ],
+            "correctAnswer": "High humidity and moderate temperatures"
+          },
+          {
+            "question": "Why is it important to water the soil instead of the leaves of a plant?",
+            "options": [
+              "Leaves can't absorb water.",
+              "It saves time.",
+              "Wet foliage creates a breeding ground for fungal spores.",
+              "It's just a myth."
+            ],
+            "correctAnswer": "Wet foliage creates a breeding ground for fungal spores."
+          },
+          {
+            "question": "What is a simple, organic spray that can help control powdery mildew?",
+            "options": [
+              "Sugar water",
+              "A solution of milk and water",
+              "Saltwater",
+              "Vegetable oil"
+            ],
+            "correctAnswer": "A solution of milk and water"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "greenhouse-management",
+    "slug": "greenhouse-management",
+    "title": "Greenhouse Management",
+    "description": "Extend your growing season and control the environment with a greenhouse.",
+    "category": "Crop Production",
+    "imageUrl": "https://placehold.co/600x400.png",
+    "lessons": [
+      {
+        "id": "greenhouse-ventilation",
+        "slug": "greenhouse-ventilation",
+        "title": "Ventilation and Temperature Control",
+        "content": "A greenhouse can quickly overheat, even on cool sunny days. This lesson covers the critical importance of ventilation for temperature regulation, humidity control, and replenishing CO2. We will explore different ventilation methods, from simple manual roof vents and doors to automated systems with thermostats and fans. Understanding how to manage airflow is key to preventing plant stress and disease.",
+        "videoUrl": "https://www.youtube.com/embed/videoseries?list=PL4_hYwCyh4h_Q3E_1g4iIykO0iB4_4w5c",
+        "quiz": [
+          {
+            "question": "What is the primary reason for ventilating a greenhouse?",
+            "options": [
+              "To let insects in for pollination.",
+              "To control temperature and humidity.",
+              "To make the greenhouse smell better.",
+              "To dry out the soil faster."
+            ],
+            "correctAnswer": "To control temperature and humidity."
+          },
+          {
+            "question": "What is 'damping off' disease in seedlings, often a problem in poorly ventilated greenhouses?",
+            "options": [
+              "Seedlings growing too tall.",
+              "A fungal disease that causes seedlings to rot at the soil line.",
+              "Seedlings drying out from too much heat.",
+              "Seedlings being eaten by pests."
+            ],
+            "correctAnswer": "A fungal disease that causes seedlings to rot at the soil line."
+          },
+          {
+            "question": "Shade cloths are used in a greenhouse during which season?",
+            "options": [
+              "Winter, to keep heat in.",
+              "Summer, to reduce heat and light intensity.",
+              "Autumn, to protect from frost.",
+              "Spring, to encourage flowering."
+            ],
+            "correctAnswer": "Summer, to reduce heat and light intensity."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "shrimp-farming-intro",
+    "slug": "shrimp-farming-intro",
+    "title": "Introduction to Shrimp Farming",
+    "description": "Get started with the lucrative and challenging world of shrimp aquaculture.",
+    "category": "Fish Farming",
+    "imageUrl": "https://placehold.co/600x400.png",
+    "lessons": [
+      {
+        "id": "shrimp-pond-prep",
+        "slug": "shrimp-pond-prep",
+        "title": "Shrimp Pond Preparation",
+        "content": "Proper pond preparation is essential for a successful shrimp harvest. This lesson details the steps for preparing a pond, including drying and tilling the pond bottom, applying lime to stabilize pH, and fertilizing to encourage a healthy bloom of phytoplankton, which serves as a natural food source. We will also cover the importance of installing screens on inlets and outlets to prevent the entry of predators and the escape of shrimp.",
+        "videoUrl": "https://www.youtube.com/embed/videoseries?list=PL4_hYwCyh4h_Q3E_1g4iIykO0iB4_4w5c",
+        "quiz": [
+          {
+            "question": "Why is lime often added to shrimp ponds during preparation?",
+            "options": [
+              "To make the water clearer.",
+              "To disinfect the pond and stabilize pH.",
+              "To feed the shrimp directly.",
+              "To color the water green."
+            ],
+            "correctAnswer": "To disinfect the pond and stabilize pH."
+          },
+          {
+            "question": "What is the 'nursery phase' in shrimp farming?",
+            "options": [
+              "The final stage before harvest.",
+              "Growing post-larvae (PL) in smaller, controlled tanks before moving them to the main pond.",
+              "The period when the pond is empty.",
+              "The process of harvesting shrimp."
+            ],
+            "correctAnswer": "Growing post-larvae (PL) in smaller, controlled tanks before moving them to the main pond."
+          },
+          {
+            "question": "A healthy 'phytoplankton bloom' in a shrimp pond serves what purpose?",
+            "options": [
+              "It provides a natural food source and helps stabilize water quality.",
+              "It's a sign of dangerous pollution.",
+              "It blocks sunlight from reaching the bottom.",
+              "It attracts birds that eat shrimp."
+            ],
+            "correctAnswer": "It provides a natural food source and helps stabilize water quality."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "japanese-beetle-control",
+    "slug": "japanese-beetle-control",
+    "title": "Controlling Japanese Beetles",
+    "description": "Protect your plants from one of the most destructive garden pests.",
+    "category": "Pest Control",
+    "imageUrl": "https://placehold.co/600x400.png",
+    "lessons": [
+      {
+        "id": "japanese-beetle-strategies",
+        "slug": "japanese-beetle-strategies",
+        "title": "Strategies for Japanese Beetle Control",
+        "content": "Japanese beetles can skeletonize leaves in a short amount of time. This lesson covers an integrated approach to managing them. We'll discuss mechanical methods like hand-picking them off plants in the early morning, the use of milky spore to control the grub stage in your lawn, and planting trap crops like zinnias away from your prized plants. We will also discuss why pheromone traps can sometimes make the problem worse by attracting more beetles to your yard.",
+        "videoUrl": "https://www.youtube.com/embed/videoseries?list=PL4_hYwCyh4h_Q3E_1g4iIykO0iB4_4w5c",
+        "quiz": [
+          {
+            "question": "What is the most effective time of day to hand-pick Japanese beetles off plants?",
+            "options": [
+              "Midday, when they are most active.",
+              "Early morning, when they are sluggish.",
+              "Late at night, when they are sleeping.",
+              "It doesn't matter."
+            ],
+            "correctAnswer": "Early morning, when they are sluggish."
+          },
+          {
+            "question": "What is the potential downside of using Japanese beetle pheromone traps?",
+            "options": [
+              "They are very expensive.",
+              "They only work on the grub stage.",
+              "They can attract more beetles into your yard than they catch.",
+              "They are harmful to beneficial insects."
+            ],
+            "correctAnswer": "They can attract more beetles into your yard than they catch."
+          },
+          {
+            "question": "Milky spore is a biological control that targets which stage of the Japanese beetle's life cycle?",
+            "options": [
+              "The adult beetle.",
+              "The egg.",
+              "The grub stage in the soil.",
+              "The pupa."
+            ],
+            "correctAnswer": "The grub stage in the soil."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "harvesting-and-storing-crops",
+    "slug": "harvesting-and-storing-crops",
+    "title": "Harvesting and Storing Your Crops",
+    "description": "Maximize the life and flavor of your harvest with proper techniques.",
+    "category": "Crop Production",
+    "imageUrl": "https://placehold.co/600x400.png",
+    "lessons": [
+      {
+        "id": "curing-and-storing-root-crops",
+        "slug": "curing-and-storing-root-crops",
+        "title": "Curing and Storing Root Crops",
+        "content": "Some crops, like potatoes, sweet potatoes, and winter squash, need a 'curing' period before long-term storage. This lesson explains the curing process—allowing the crop to sit in a warm, humid place for a short time to heal cuts and thicken the skin. We will then cover the ideal storage conditions (cool, dark, and well-ventilated) for various root crops to keep them fresh for months.",
+        "videoUrl": "https://www.youtube.com/embed/videoseries?list=PL4_hYwCyh4h_Q3E_1g4iIykO0iB4_4w5c",
+        "quiz": [
+          {
+            "question": "What is the primary purpose of 'curing' potatoes before storage?",
+            "options": [
+              "To make them sweeter.",
+              "To heal minor cuts and bruises and toughen the skin for longer storage.",
+              "To clean the dirt off them.",
+              "To prepare them for immediate cooking."
+            ],
+            "correctAnswer": "To heal minor cuts and bruises and toughen the skin for longer storage."
+          },
+          {
+            "question": "Why should you not store onions and potatoes together?",
+            "options": [
+              "They will fight.",
+              "Onions release ethylene gas which can cause potatoes to sprout.",
+              "Potatoes make onions spoil faster.",
+              "It's a common myth; they can be stored together."
+            ],
+            "correctAnswer": "Onions release ethylene gas which can cause potatoes to sprout."
+          },
+          {
+            "question": "What are ideal conditions for storing most root vegetables like carrots and beets?",
+            "options": [
+              "Warm and sunny.",
+              "Cold and moist, like in a refrigerator's crisper drawer.",
+              "Frozen solid.",
+              "Dry and at room temperature."
+            ],
+            "correctAnswer": "Cold and moist, like in a refrigerator's crisper drawer."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "recirculating-aquaculture-systems",
+    "slug": "recirculating-aquaculture-systems",
+    "title": "Recirculating Aquaculture Systems (RAS)",
+    "description": "An in-depth look at high-intensity, low-impact fish farming with RAS.",
+    "category": "Fish Farming",
+    "imageUrl": "https://placehold.co/600x400.png",
+    "lessons": [
+      {
+        "id": "ras-components",
+        "slug": "ras-components",
+        "title": "Key Components of a RAS",
+        "content": "Recirculating Aquaculture Systems (RAS) are advanced, closed-loop systems that allow for high-density fish farming with minimal water use. This lesson breaks down the essential components of a RAS, including mechanical filters (to remove solid waste), biofilters (for nitrogen conversion), protein skimmers (for dissolved organics), and sterilization units (like UV or ozone). Understanding the function of each component is crucial for maintaining a stable system.",
+        "videoUrl": "https://www.youtube.com/embed/videoseries?list=PL4_hYwCyh4h_Q3E_1g4iIykO0iB4_4w5c",
+        "quiz": [
+          {
+            "question": "What is the main function of a mechanical filter in a RAS?",
+            "options": [
+              "To add oxygen to the water.",
+              "To remove solid fish waste.",
+              "To convert ammonia to nitrate.",
+              "To kill bacteria."
+            ],
+            "correctAnswer": "To remove solid fish waste."
+          },
+          {
+            "question": "The biofilter in a RAS performs the same function as what natural process?",
+            "options": [
+              "Photosynthesis",
+              "Evaporation",
+              "The nitrogen cycle",
+              "Respiration"
+            ],
+            "correctAnswer": "The nitrogen cycle"
+          },
+          {
+            "question": "What is the biggest advantage of a RAS compared to a traditional pond system?",
+            "options": [
+              "It requires no electricity.",
+              "It has lower initial setup costs.",
+              "It provides much greater control over the growing environment and uses less water.",
+              "It is easier to manage for beginners."
+            ],
+            "correctAnswer": "It provides much greater control over the growing environment and uses less water."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "slug-and-snail-control",
+    "slug": "slug-and-snail-control",
+    "title": "Slug and Snail Control",
+    "description": "Protect your leafy greens and seedlings from these slimy pests.",
+    "category": "Pest Control",
+    "imageUrl": "https://placehold.co/600x400.png",
+    "lessons": [
+      {
+        "id": "organic-slug-baits",
+        "slug": "organic-slug-baits",
+        "title": "Organic Baits and Traps for Slugs",
+        "content": "Slugs and snails can devastate a garden overnight. This lesson focuses on non-toxic methods to control them. Learn how to create simple beer traps that lure slugs to their demise. We will also cover the use of diatomaceous earth and crushed eggshells as abrasive barriers, and discuss the effectiveness of iron phosphate-based baits, which are safe for wildlife and pets.",
+        "videoUrl": "https://www.youtube.com/embed/videoseries?list=PL4_hYwCyh4h_Q3E_1g4iIykO0iB4_4w5c",
+        "quiz": [
+          {
+            "question": "How does a beer trap work to control slugs?",
+            "options": [
+              "The alcohol poisons them.",
+              "Slugs are attracted to the yeast smell, fall in, and drown.",
+              "The beer cleans the slugs, making them healthier.",
+              "It doesn't work; it's a myth."
+            ],
+            "correctAnswer": "Slugs are attracted to the yeast smell, fall in, and drown."
+          },
+          {
+            "question": "Diatomaceous earth helps control slugs by...",
+            "options": [
+              "Poisoning them internally.",
+              "Being a food source for them.",
+              "Creating a sharp, abrasive barrier that damages their soft bodies.",
+              "Attracting predators that eat slugs."
+            ],
+            "correctAnswer": "Creating a sharp, abrasive barrier that damages their soft bodies."
+          },
+          {
+            "question": "When is the best time to hunt for slugs and snails in the garden?",
+            "options": [
+              "In the hot, sunny afternoon.",
+              "At night or on a damp, overcast day.",
+              "During a windy day.",
+              "In the middle of winter."
+            ],
+            "correctAnswer": "At night or on a damp, overcast day."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "seed-saving-techniques",
+    "slug": "seed-saving-techniques",
+    "title": "Seed Saving Techniques",
+    "description": "Become self-sufficient by learning how to save seeds from your own plants.",
+    "category": "Crop Production",
+    "imageUrl": "https://placehold.co/600x400.png",
+    "lessons": [
+      {
+        "id": "saving-tomato-seeds",
+        "slug": "saving-tomato-seeds",
+        "title": "Saving Tomato Seeds with Fermentation",
+        "content": "Saving tomato seeds requires a special fermentation step to remove the germination-inhibiting gel that surrounds them. This lesson provides a step-by-step guide: scoop out the seeds and pulp from a ripe tomato, let them ferment in water for a few days, then rinse and dry the clean seeds. We'll also cover the importance of starting with open-pollinated (not hybrid) varieties to ensure your saved seeds grow true to type.",
+        "videoUrl": "https://www.youtube.com/embed/videoseries?list=PL4_hYwCyh4h_Q3E_1g4iIykO0iB4_4w5c",
+        "quiz": [
+          {
+            "question": "Why is it important to save seeds from 'open-pollinated' or 'heirloom' varieties?",
+            "options": [
+              "They are easier to grow.",
+              "Their seeds will produce plants identical to the parent plant.",
+              "They are resistant to all diseases.",
+              "Hybrid seeds are illegal to save."
+            ],
+            "correctAnswer": "Their seeds will produce plants identical to the parent plant."
+          },
+          {
+            "question": "What is the purpose of fermenting tomato seeds before saving them?",
+            "options": [
+              "To make them taste better.",
+              "To remove the gel-like coating that inhibits germination.",
+              "To make them bigger.",
+              "To add nutrients to the seeds."
+            ],
+            "correctAnswer": "To remove the gel-like coating that inhibits germination."
+          },
+          {
+            "question": "How should you store properly dried seeds for the long term?",
+            "options": [
+              "In a warm, sunny window.",
+              "In a damp paper towel.",
+              "In a cool, dark, and dry place.",
+              "In the freezer."
+            ],
+            "correctAnswer": "In a cool, dark, and dry place."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "common-fish-diseases",
+    "slug": "common-fish-diseases",
+    "title": "Common Fish Diseases and Treatments",
+    "description": "Learn to identify and treat common ailments in your aquaculture system.",
+    "category": "Fish Farming",
+    "imageUrl": "https://placehold.co/600x400.png",
+    "lessons": [
+      {
+        "id": "ich-identification-treatment",
+        "slug": "ich-identification-treatment",
+        "title": "Identifying and Treating Ich",
+        "content": "Ich, or White Spot Disease, is one of the most common parasitic diseases in freshwater fish. This lesson teaches you to identify the tell-tale signs of Ich—tiny white spots that look like grains of salt on the fish's body and fins. We will cover common treatment methods, including raising the water temperature and using salt baths or commercially available medications. Prevention through proper quarantine of new fish is also emphasized.",
+        "videoUrl": "https://www.youtube.com/embed/videoseries?list=PL4_hYwCyh4h_Q3E_1g4iIykO0iB4_4w5c",
+        "quiz": [
+          {
+            "question": "What is the classic visual symptom of Ich (White Spot Disease)?",
+            "options": [
+              "Large, fuzzy patches.",
+              "Red streaks on the fins.",
+              "Small white spots resembling salt grains.",
+              "Swollen eyes."
+            ],
+            "correctAnswer": "Small white spots resembling salt grains."
+          },
+          {
+            "question": "Why is quarantining new fish before adding them to your main tank a crucial practice?",
+            "options": [
+              "To see if they can survive alone.",
+              "To prevent the introduction of diseases and parasites.",
+              "To teach them how to swim.",
+              "To make them less aggressive."
+            ],
+            "correctAnswer": "To prevent the introduction of diseases and parasites."
+          },
+          {
+            "question": "How does raising water temperature help in treating Ich?",
+            "options": [
+              "It makes the fish too warm to get sick.",
+              "It speeds up the parasite's life cycle, making it vulnerable to treatment.",
+              "It kills the parasite instantly.",
+              "It adds more oxygen to the water."
+            ],
+            "correctAnswer": "It speeds up the parasite's life cycle, making it vulnerable to treatment."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "aphid-control-methods",
+    "slug": "aphid-control-methods",
+    "title": "Organic Aphid Control",
+    "description": "Get rid of aphids without resorting to harsh chemicals.",
+    "category": "Pest Control",
+    "imageUrl": "https://placehold.co/600x400.png",
+    "lessons": [
+      {
+        "id": "aphid-management",
+        "slug": "aphid-management",
+        "title": "Managing Aphid Infestations",
+        "content": "Aphids are small, sap-sucking insects that can multiply rapidly. This lesson covers several organic control methods. Learn how a strong blast of water from a hose can dislodge them, how to make a simple insecticidal soap spray at home, and the importance of encouraging natural predators like ladybugs. We will also discuss the symbiotic relationship between ants and aphids and why managing ant populations can be part of your aphid control strategy.",
+        "videoUrl": "https://www.youtube.com/embed/videoseries?list=PL4_hYwCyh4h_Q3E_1g4iIykO0iB4_4w5c",
+        "quiz": [
+          {
+            "question": "What is a key ingredient in homemade insecticidal soap?",
+            "options": [
+              "Sugar",
+              "A mild liquid soap without degreasers or bleach.",
+              "Vinegar",
+              "Baking soda"
+            ],
+            "correctAnswer": "A mild liquid soap without degreasers or bleach."
+          },
+          {
+            "question": "Why do ants often 'farm' aphids?",
+            "options": [
+              "Ants eat aphids.",
+              "Ants are protected by aphids.",
+              "Ants consume the sweet 'honeydew' that aphids excrete.",
+              "It's a coincidence; they don't interact."
+            ],
+            "correctAnswer": "Ants consume the sweet 'honeydew' that aphids excrete."
+          },
+          {
+            "question": "Which beneficial insect is a famous predator of aphids?",
+            "options": [
+              "Butterflies",
+              "Bees",
+              "Ladybugs",
+              "Moths"
+            ],
+            "correctAnswer": "Ladybugs"
+          }
+        ]
+      }
+    ]
   }
 ]

@@ -1,23 +1,6 @@
-import type {NextConfig} from 'next';
-
-const nextConfig: NextConfig = {
-  /* config options here */
-  typescript: {
-    ignoreBuildErrors: true,
-  },
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
-  images: {
-    remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: 'placehold.co',
-        port: '',
-        pathname: '/**',
-      },
-    ],
-  },
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  output: 'export',          // enables static export
+  images: { unoptimized: true }, // because Next.js image optimization doesn’t work with static export
 };
-
-export default nextConfig;
+module.exports = nextConfig;

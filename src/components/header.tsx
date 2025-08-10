@@ -1,27 +1,35 @@
-import {
-  SidebarTrigger,
-} from "@/components/ui/sidebar"
+import { useState } from "react"
 import { UserNav } from "@/components/user-nav"
 import Link from "next/link"
-import { Leaf, Sidebar } from "lucide-react"
+import { Leaf, Menu } from "lucide-react"
 import { Button } from "./ui/button"
 import { useSidebar } from "./ui/sidebar"
 
 export function Header() {
   const { toggleSidebar } = useSidebar()
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
+
+  const handleMenuClick = () => {
+    setIsMenuOpen(!isMenuOpen)
+    toggleSidebar()
+  }
+
   return (
     <header className="sticky top-0 z-10 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6">
       <div className="flex items-center gap-2">
         <Button
-            variant="ghost"
-            size="icon"
-            className="md:hidden"
-            onClick={toggleSidebar}
+          variant="ghost"
+          size="icon"
+          className="md:hidden"
+          onClick={handleMenuClick}
         >
-            <Sidebar className="h-6 w-6" />
-            <span className="sr-only">Toggle Sidebar</span>
+          <Menu className={`h-5 w-5 transition-transform duration-200 ${isMenuOpen ? 'rotate-90' : ''}`} />
+          <span className="sr-only">Toggle Sidebar</span>
         </Button>
-        <Link href="/dashboard" className="hidden md:flex items-center gap-2 text-lg font-semibold">
+        <Link 
+          href="/dashboard" 
+          className="hidden md:flex items-center gap-2 text-lg font-semibold"
+        >
           <Leaf className="h-6 w-6 text-primary" />
           <span>FarmWise</span>
         </Link>
